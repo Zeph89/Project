@@ -35,7 +35,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		try {
 			connexion = daoFactory.getConnection();
 			preparedStatement = initialisationRequetePreparee(connexion,
-					SQL_INSERT, true, computer.getIntroducedDate(),
+					SQL_INSERT, true, computer.getName(), computer.getIntroducedDate(),
 					computer.getDiscontinuedDate(), computer.getCompany()
 							.getId());
 
