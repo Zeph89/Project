@@ -8,12 +8,12 @@ public class Computer {
 	private String name;
 	private Date introducedDate;
 	private Date discontinuedDate;
-	private String company;
+	private Company company;
 	
 	public Computer() {}
 	
 	public Computer(int id, String name, Date introducedDate,
-			Date discontinuedDate, String company) {
+			Date discontinuedDate, Company company) {
 		this.id = id;
 		this.name = name;
 		this.introducedDate = introducedDate;
@@ -53,14 +53,14 @@ public class Computer {
 		this.discontinuedDate = discontinuedDate;
 	}
 
-	public String getCompany() {
+	public Company getCompany() {
 		return company;
 	}
 
-	public void setCompany(String company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Computer [id=" + id + ", name=" + name + ", introducedDate="
