@@ -7,7 +7,6 @@
 <link rel="stylesheet" type="text/css" media="screen" href="css/main.css">
 </head>
 <body>
-
 	<header class="topbar">
 		<h1 class="fill">
 			Computer Database
@@ -38,7 +37,7 @@
 			<tbody>
 				<c:forEach var="computer" items="${computers}" >
 					<tr>
-						<td>${computer.name}</td>
+						<td><a href="/projectComputer/InfoComputerServlet?id=${computer.id}">${computer.name}</a></td>
 						<td>
 							<c:choose>
 								<c:when test="${computer.introducedDate != null}"> ${computer.introducedDate} </c:when>
@@ -68,7 +67,6 @@
 			</tbody>
 		</table>
 	</section>
-
 </body>
 </html>
 
