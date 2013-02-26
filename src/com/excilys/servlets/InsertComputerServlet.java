@@ -3,6 +3,7 @@ package com.excilys.servlets;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,11 +18,11 @@ import com.excilys.dao.ComputerDAO;
 import com.excilys.dao.ComputerDaoImpl;
 import com.excilys.dao.DAOFactory;
 
-@WebServlet("/UpdateComputerServlet")
-public class UpdateComputerServlet extends HttpServlet {
+@WebServlet("/InsertComputerServlet")
+public class InsertComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public UpdateComputerServlet() {
+    public InsertComputerServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,22 +32,19 @@ public class UpdateComputerServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int id = (Integer.parseInt(request.getParameter("id")));
 		String name = request.getParameter("name");
 		String introducedDate = request.getParameter("introduced");
 		String discontinuedDate = request.getParameter("discontinued");
 		String companyS = request.getParameter("company");
 		
-		DAOFactory daoFactory = DAOFactory.getInstance();
-		ComputerDAO cd = new ComputerDaoImpl(daoFactory);
-		Computer c = cd.findById(id);
-		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		boolean error = false;
 		
+		Date introduced = null;
+		Date discontinued = null;
 		if (introducedDate.equals("") == false) {
 			try {
-				dateFormat.parse(introducedDate);
+				introduced = dateFormat.parse(introducedDate);
 				request.setAttribute("introducedE", 0);
 			} catch (ParseException e) {
 				request.setAttribute("introducedE", 1);
@@ -56,7 +54,7 @@ public class UpdateComputerServlet extends HttpServlet {
 		
 		if (discontinuedDate.equals("") == false) {
 			try {
-				dateFormat.parse(discontinuedDate);	
+				discontinued = dateFormat.parse(discontinuedDate);	
 				request.setAttribute("discontinuedE", 0);
 			} catch (ParseException e) {
 				request.setAttribute("discontinuedE", 1);
@@ -64,27 +62,40 @@ public class UpdateComputerServlet extends HttpServlet {
 			}
 		}
 		
+		int companyId = 0;
+		if (companyS.equals("") == false)
+			companyId = (Integer.parseInt(request.getParameter("company")));
+		
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		
+		CompanyDAO cy = new CompanyDaoImpl(daoFactory);
+		
 		if (!error) {
-			int companyId = -1;
-			if (companyS.equals("") == false)
-				companyId = (Integer.parseInt(request.getParameter("company")));
+			Computer c = new Computer();
+			c.setName(name);
+			c.setIntroducedDate(introduced);
+			c.setDiscontinuedDate(discontinued);
 			
-			cd.update(c, name, introducedDate, discontinuedDate, companyId);
+			if (companyId != 0)
+				c.setCompany(cy.findById(companyId));
+			else
+				c.setCompany(null);
 			
-			request.setAttribute("message", 2);
+			ComputerDAO cd = new ComputerDaoImpl(daoFactory);
+			cd.create(c);
+			
+			request.setAttribute("message", 1);
 			request.setAttribute("nameMess", c.getName());
-	
+
 			this.getServletContext().getRequestDispatcher("/InitServlet").forward(request, response);
 		} else {
-			request.setAttribute("id", c.getId());
 			request.setAttribute("name", name);
 			request.setAttribute("introducedDate", introducedDate);
 			request.setAttribute("discontinuedDate", discontinuedDate);
-			request.setAttribute("companyId", c.getCompany().getId());
+			request.setAttribute("companyId", companyId);
 			
-			CompanyDAO cy = new CompanyDaoImpl(daoFactory);
 			request.setAttribute("companies", cy.list());
-			this.getServletContext().getRequestDispatcher("/updateComputer.jsp").forward(request, response);
+			this.getServletContext().getRequestDispatcher("/insertComputer.jsp").forward(request, response);
 		}
 	}
 }

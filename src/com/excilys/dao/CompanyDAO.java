@@ -12,5 +12,5 @@ public interface CompanyDAO {
 
 	List<Company> list() throws DAOException;
 
-	void delete(Company company) throws DAOException;
+	void delete(int id) throws DAOException;
 }

@@ -24,18 +24,34 @@ public class InitServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DAOFactory daoFactory = DAOFactory.getInstance();
-		ComputerDAO cd = new ComputerDaoImpl(daoFactory);
-
-		List<Computer> listc = cd.list();
-		request.setAttribute("computers", listc);
-		
-		System.out.println(listc);
-		this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);
+		doAction(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		doAction(request, response);
+	}
+	
+	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		ComputerDAO cd = new ComputerDaoImpl(daoFactory);
+
+		List<Computer> listc = null;
+		if (request.getParameter("search") == null)
+			listc = cd.list();
+		else
+			listc = cd.list(request.getParameter("search"));
+
+		request.setAttribute("computers", listc);
+		
+		if (request.getParameter("message") != null) {
+			request.setAttribute("message", Integer.parseInt(request.getParameter("message")));
+			System.out.println(request.getParameter("message"));
+		}
+		
+		if (request.getParameter("nameMess") != null)
+			request.setAttribute("nameMess", request.getParameter("nameMess"));
+		
+		this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);
 	}
 
 }

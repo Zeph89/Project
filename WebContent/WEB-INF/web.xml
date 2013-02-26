@@ -16,4 +16,12 @@
     <servlet-name>DeleteComputerServlet</servlet-name>
     <servlet-class>com.excilys.servlets</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>AddComputerServlet</servlet-name>
+    <servlet-class>com.excilys.servlets</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>InsertComputerServlet</servlet-name>
+    <servlet-class>com.excilys.servlets</servlet-class>
+  </servlet>
 </web-app>

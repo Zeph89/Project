@@ -105,20 +105,18 @@ public class CompanyDaoImpl implements CompanyDAO {
 	}
 
 	@Override
-	public void delete(Company company) throws DAOException {
+	public void delete(int id) throws DAOException {
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
 			connexion = daoFactory.getConnection();
 			preparedStatement = initialisationRequetePreparee(connexion,
-					SQL_DELETE_BY_ID, true, company.getId());
+					SQL_DELETE_BY_ID, true, id);
 			int statut = preparedStatement.executeUpdate();
 			if (statut == 0) {
 				throw new DAOException(
 						"Échec de la suppression de la company, aucune ligne supprimée de la table.");
-			} else {
-				company.setId(-1);
 			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
