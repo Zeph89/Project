@@ -14,7 +14,17 @@
 	</header>
 
 	<section id="main">
-		<h1>${nbComputer} computers found</h1>
+		<h1>
+			${nbComputer}
+			<c:choose>
+				<c:when test="${nbComputer < 2}"> 
+					computer found
+				</c:when>
+				<c:otherwise>
+					computers found
+				</c:otherwise>
+			</c:choose>
+		</h1>
 		<c:choose>
 			<c:when test="${message == 1}">
 				<div class="alert-message warning">
@@ -150,7 +160,7 @@
 			</a></li>
 
 			<c:choose>
-				<c:when test="${page!= 0 && (page+1)*PAGE_SIZE>nbComputer}">
+				<c:when test="${(page+1)*PAGE_SIZE>nbComputer}">
 					<li class="next disabled"><a>Next &rarr;</a></li>
 				</c:when>
 				<c:otherwise>
