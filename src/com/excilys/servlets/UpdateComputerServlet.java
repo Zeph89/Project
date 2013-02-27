@@ -16,6 +16,10 @@ import com.excilys.dao.CompanyDaoImpl;
 import com.excilys.dao.ComputerDAO;
 import com.excilys.dao.ComputerDaoImpl;
 import com.excilys.dao.DAOFactory;
+import com.excilys.service.CompanyService;
+import com.excilys.service.CompanyServiceImpl;
+import com.excilys.service.ComputerService;
+import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/UpdateComputerServlet")
 public class UpdateComputerServlet extends HttpServlet {
@@ -37,8 +41,7 @@ public class UpdateComputerServlet extends HttpServlet {
 		String discontinuedDate = request.getParameter("discontinued");
 		String companyS = request.getParameter("company");
 		
-		DAOFactory daoFactory = DAOFactory.getInstance();
-		ComputerDAO cd = new ComputerDaoImpl(daoFactory);
+		ComputerService cd = new ComputerServiceImpl();
 		Computer c = cd.findById(id);
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,7 +85,7 @@ public class UpdateComputerServlet extends HttpServlet {
 			request.setAttribute("discontinuedDate", discontinuedDate);
 			request.setAttribute("companyId", c.getCompany().getId());
 			
-			CompanyDAO cy = new CompanyDaoImpl(daoFactory);
+			CompanyService cy = new CompanyServiceImpl();
 			request.setAttribute("companies", cy.list());
 			this.getServletContext().getRequestDispatcher("/updateComputer.jsp").forward(request, response);
 		}

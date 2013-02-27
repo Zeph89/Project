@@ -12,11 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.beans.Computer;
-import com.excilys.dao.CompanyDAO;
-import com.excilys.dao.CompanyDaoImpl;
-import com.excilys.dao.ComputerDAO;
-import com.excilys.dao.ComputerDaoImpl;
-import com.excilys.dao.DAOFactory;
+import com.excilys.service.CompanyService;
+import com.excilys.service.CompanyServiceImpl;
+import com.excilys.service.ComputerService;
+import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/InsertComputerServlet")
 public class InsertComputerServlet extends HttpServlet {
@@ -66,9 +65,7 @@ public class InsertComputerServlet extends HttpServlet {
 		if (companyS.equals("") == false)
 			companyId = (Integer.parseInt(request.getParameter("company")));
 		
-		DAOFactory daoFactory = DAOFactory.getInstance();
-		
-		CompanyDAO cy = new CompanyDaoImpl(daoFactory);
+		CompanyService cy = new CompanyServiceImpl();
 		
 		if (!error) {
 			Computer c = new Computer();
@@ -81,7 +78,7 @@ public class InsertComputerServlet extends HttpServlet {
 			else
 				c.setCompany(null);
 			
-			ComputerDAO cd = new ComputerDaoImpl(daoFactory);
+			ComputerService cd = new ComputerServiceImpl();
 			cd.create(c);
 			
 			request.setAttribute("message", 1);

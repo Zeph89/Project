@@ -20,7 +20,7 @@ public class CompanyDaoImpl implements CompanyDAO {
 	private static final String SQL_DELETE_BY_ID = "DELETE FROM company WHERE id = ?";
 
 	private DAOFactory daoFactory;
-
+	
 	public CompanyDaoImpl(DAOFactory daoFactory) {
 		this.daoFactory = daoFactory;
 	}

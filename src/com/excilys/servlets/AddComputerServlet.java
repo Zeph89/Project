@@ -8,9 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.dao.CompanyDAO;
-import com.excilys.dao.CompanyDaoImpl;
-import com.excilys.dao.DAOFactory;
+import com.excilys.service.CompanyService;
+import com.excilys.service.CompanyServiceImpl;
 
 @WebServlet("/AddComputerServlet")
 public class AddComputerServlet extends HttpServlet {
@@ -30,8 +29,7 @@ public class AddComputerServlet extends HttpServlet {
 	}
 	
 	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DAOFactory daoFactory = DAOFactory.getInstance();
-		CompanyDAO cy = new CompanyDaoImpl(daoFactory);
+		CompanyService cy = new CompanyServiceImpl();
 		request.setAttribute("companies", cy.list());
 		
 		this.getServletContext().getRequestDispatcher("/insertComputer.jsp").forward(request, response);

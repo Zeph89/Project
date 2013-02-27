@@ -10,9 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.beans.Computer;
-import com.excilys.dao.ComputerDAO;
-import com.excilys.dao.ComputerDaoImpl;
-import com.excilys.dao.DAOFactory;
+import com.excilys.service.ComputerService;
+import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/InitServlet")
 public class InitServlet extends HttpServlet {
@@ -34,8 +33,7 @@ public class InitServlet extends HttpServlet {
 	}
 	
 	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DAOFactory daoFactory = DAOFactory.getInstance();
-		ComputerDAO cd = new ComputerDaoImpl(daoFactory);
+		ComputerService cd = new ComputerServiceImpl();
 
 		if(request.getParameter("page") == null || request.getParameter("page").equals(""))
 			request.setAttribute("page", 0);

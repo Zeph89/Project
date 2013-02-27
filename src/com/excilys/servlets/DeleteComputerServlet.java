@@ -8,9 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.dao.ComputerDAO;
-import com.excilys.dao.ComputerDaoImpl;
-import com.excilys.dao.DAOFactory;
+import com.excilys.service.ComputerService;
+import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/DeleteComputerServlet")
 public class DeleteComputerServlet extends HttpServlet {
@@ -22,9 +21,7 @@ public class DeleteComputerServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = (Integer.parseInt(request.getParameter("id")));
-
-		DAOFactory daoFactory = DAOFactory.getInstance();
-		ComputerDAO cd = new ComputerDaoImpl(daoFactory);
+		ComputerService cd = new ComputerServiceImpl();
 		
 		request.setAttribute("message", 3);
 		request.setAttribute("nameMess", cd.findById(id).getName());
