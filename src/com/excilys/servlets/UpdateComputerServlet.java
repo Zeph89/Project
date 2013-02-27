@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.beans.Computer;
-import com.excilys.dao.CompanyDAO;
-import com.excilys.dao.CompanyDaoImpl;
-import com.excilys.dao.ComputerDAO;
-import com.excilys.dao.ComputerDaoImpl;
-import com.excilys.dao.DAOFactory;
 import com.excilys.service.CompanyService;
 import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;

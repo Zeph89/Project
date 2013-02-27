@@ -30,40 +30,32 @@ public class ComputerDaoImpl implements ComputerDAO {
 	}
 
 	@Override
-	public void create(Computer computer) throws DAOException {
-		Connection connexion = null;
+	public void create(Computer computer, Connection connection) throws DAOException, SQLException {
 		PreparedStatement preparedStatement = null;
 		ResultSet valeursAutoGenerees = null;
 
-		try {
-			connexion = daoFactory.getConnection();
-			if (computer.getCompany() != null)
-				preparedStatement = initialisationRequetePreparee(connexion,
-						SQL_INSERT, true, computer.getName(), computer.getIntroducedDate(),
-						computer.getDiscontinuedDate(), computer.getCompany()
-								.getId());
-			else
-				preparedStatement = initialisationRequetePreparee(connexion,
-						SQL_INSERT, true, computer.getName(), computer.getIntroducedDate(),
-						computer.getDiscontinuedDate(), null);
+		connection = daoFactory.getConnection();
+		if (computer.getCompany() != null)
+			preparedStatement = initialisationRequetePreparee(connection,
+					SQL_INSERT, true, computer.getName(), computer.getIntroducedDate(),
+					computer.getDiscontinuedDate(), computer.getCompany()
+							.getId());
+		else
+			preparedStatement = initialisationRequetePreparee(connection,
+					SQL_INSERT, true, computer.getName(), computer.getIntroducedDate(),
+					computer.getDiscontinuedDate(), null);
 
-			int statut = preparedStatement.executeUpdate();
-			if (statut == 0) {
-				throw new DAOException(
-						"Échec de la création de l'ordinateur, aucune ligne ajoutée dans la table.");
-			}
-			valeursAutoGenerees = preparedStatement.getGeneratedKeys();
-			if (valeursAutoGenerees.next()) {
-				computer.setId(valeursAutoGenerees.getInt(1));
-			} else {
-				throw new DAOException(
-						"Échec de la création de l'ordinateur en base, aucun ID auto-généré retourné.");
-			}
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			fermeturesSilencieuses(valeursAutoGenerees, preparedStatement,
-					connexion);
+		int statut = preparedStatement.executeUpdate();
+		if (statut == 0) {
+			throw new DAOException(
+					"Échec de la création de l'ordinateur, aucune ligne ajoutée dans la table.");
+		}
+		valeursAutoGenerees = preparedStatement.getGeneratedKeys();
+		if (valeursAutoGenerees.next()) {
+			computer.setId(valeursAutoGenerees.getInt(1));
+		} else {
+			throw new DAOException(
+					"Échec de la création de l'ordinateur en base, aucun ID auto-généré retourné.");
 		}
 	}
 
@@ -290,28 +282,19 @@ public class ComputerDaoImpl implements ComputerDAO {
 	}
 
 	@Override
-	public void delete(int id) throws DAOException {
-		Connection connexion = null;
+	public void delete(int id, Connection connection) throws DAOException, SQLException {
 		PreparedStatement preparedStatement = null;
-
-		try {
-			connexion = daoFactory.getConnection();
-			preparedStatement = initialisationRequetePreparee(connexion,
-					SQL_DELETE_BY_ID, true, id);
-			int statut = preparedStatement.executeUpdate();
-			if (statut == 0) {
-				throw new DAOException(
-						"Échec de la suppression de l'ordinateur, aucune ligne supprimée de la table.");
-			}
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			fermeturesSilencieuses(preparedStatement, connexion);
+		preparedStatement = initialisationRequetePreparee(connection,
+				SQL_DELETE_BY_ID, true, id);
+		int statut = preparedStatement.executeUpdate();
+		if (statut == 0) {
+			throw new DAOException(
+					"Échec de la suppression de l'ordinateur, aucune ligne supprimée de la table.");
 		}
 	}
 	
 	@Override
-	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId) throws DAOException  {
+	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId, Connection connection) throws DAOException, SQLException  {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		List<Integer> index = new ArrayList<Integer>();
 		StringBuilder req = new StringBuilder("UPDATE computer SET ");
@@ -356,46 +339,36 @@ public class ComputerDaoImpl implements ComputerDAO {
 		req.append(" WHERE id=?");
 		
 		if (index.size() != 0) {
-			Connection connection = null;
 			PreparedStatement preparedStatement = null;
-			ResultSet resultSet = null;
-
-			try {
-				connection = daoFactory.getConnection();
-				preparedStatement = connection.prepareStatement(req.toString());
-				
-				for (int i=0; i<index.size(); i++) {
-					if (index.get(i) == 0) {
-						preparedStatement.setString(i+1, newName);
-					} else if (index.get(i) == 1) {
-						if (newIntroducedDate.equals("") == false)
-							preparedStatement.setDate(i+1, java.sql.Date.valueOf(newIntroducedDate));
-						else
-							preparedStatement.setNull(i+1, Types.DATE);
-					} else if (index.get(i) == 2) {
-						if (newDiscontinuedDate.equals("") == false)
-							preparedStatement.setDate(i+1, java.sql.Date.valueOf(newDiscontinuedDate));
-						else
-							preparedStatement.setNull(i+1, Types.DATE);
-					} else if (index.get(i) == 3) {
-						if (newCompanyId != -1)
-							preparedStatement.setInt(i+1, newCompanyId);
-						else
-							preparedStatement.setNull(i+1, Types.INTEGER);
-					}
+			preparedStatement = connection.prepareStatement(req.toString());
+			
+			for (int i=0; i<index.size(); i++) {
+				if (index.get(i) == 0) {
+					preparedStatement.setString(i+1, newName);
+				} else if (index.get(i) == 1) {
+					if (newIntroducedDate.equals("") == false)
+						preparedStatement.setDate(i+1, java.sql.Date.valueOf(newIntroducedDate));
+					else
+						preparedStatement.setNull(i+1, Types.DATE);
+				} else if (index.get(i) == 2) {
+					if (newDiscontinuedDate.equals("") == false)
+						preparedStatement.setDate(i+1, java.sql.Date.valueOf(newDiscontinuedDate));
+					else
+						preparedStatement.setNull(i+1, Types.DATE);
+				} else if (index.get(i) == 3) {
+					if (newCompanyId != -1)
+						preparedStatement.setInt(i+1, newCompanyId);
+					else
+						preparedStatement.setNull(i+1, Types.INTEGER);
 				}
-				
-				preparedStatement.setInt(index.size()+1, oldComputer.getId());
+			}
+			
+			preparedStatement.setInt(index.size()+1, oldComputer.getId());
 
-				int statut = preparedStatement.executeUpdate();
-				if (statut == 0) {
-					throw new DAOException(
-							"Échec de la modification de l'ordinateur, aucune ligne modifiée de la table.");
-				}
-			} catch (SQLException e) {
-				throw new DAOException(e);
-			} finally {
-				fermeturesSilencieuses(resultSet, preparedStatement, connection);
+			int statut = preparedStatement.executeUpdate();
+			if (statut == 0) {
+				throw new DAOException(
+						"Échec de la modification de l'ordinateur, aucune ligne modifiée de la table.");
 			}
 		}
 	}
