@@ -17,7 +17,9 @@ import com.excilys.dao.DAOFactory;
 @WebServlet("/InitServlet")
 public class InitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
+	public final int PAGE_SIZE = 10;
+	
     public InitServlet() {
         super();
         // TODO Auto-generated constructor stub
@@ -35,21 +37,48 @@ public class InitServlet extends HttpServlet {
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		ComputerDAO cd = new ComputerDaoImpl(daoFactory);
 
-		List<Computer> listc = null;
-		if (request.getParameter("search") == null)
-			listc = cd.list();
+		if(request.getParameter("page") == null || request.getParameter("page").equals(""))
+			request.setAttribute("page", 0);
 		else
-			listc = cd.list(request.getParameter("search"));
+			request.setAttribute("page", Integer.parseInt(request.getParameter("page")));
+		int page = (Integer)request.getAttribute("page");
+		
+		List<Computer> listc = null;
+		
+		if (request.getParameter("sort") != null) {
+			request.setAttribute("page", 1);
+			page = (Integer)request.getAttribute("page");
+			
+			int sort = Integer.parseInt(request.getParameter("sort"));
+			
+			if (request.getParameter("search") == null) {
+				listc = cd.list(page*PAGE_SIZE, PAGE_SIZE, sort);
+				request.setAttribute("nbComputer", cd.getNumberComputers());
+			} else {
+				listc = cd.list(page*PAGE_SIZE, PAGE_SIZE, request.getParameter("search"), sort);
+				request.setAttribute("nbComputer", cd.getNumberComputers(request.getParameter("search")));
+				request.setAttribute("search", request.getParameter("search"));
+			}
+
+			request.setAttribute("sort", sort*(-1));
+		} else if (request.getParameter("search") == null) {
+			listc = cd.list(page*PAGE_SIZE, PAGE_SIZE);
+			request.setAttribute("nbComputer", cd.getNumberComputers());
+		} else {
+			listc = cd.list(page*PAGE_SIZE, PAGE_SIZE, request.getParameter("search"));
+			request.setAttribute("nbComputer", cd.getNumberComputers(request.getParameter("search")));
+			request.setAttribute("search", request.getParameter("search"));
+		}
 
 		request.setAttribute("computers", listc);
 		
-		if (request.getParameter("message") != null) {
+		if (request.getParameter("message") != null)
 			request.setAttribute("message", Integer.parseInt(request.getParameter("message")));
-			System.out.println(request.getParameter("message"));
-		}
 		
 		if (request.getParameter("nameMess") != null)
 			request.setAttribute("nameMess", request.getParameter("nameMess"));
+		
+		request.setAttribute("PAGE_SIZE", PAGE_SIZE);
 		
 		this.getServletContext().getRequestDispatcher("/dashboard.jsp").forward(request, response);
 	}

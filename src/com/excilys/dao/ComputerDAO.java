@@ -10,9 +10,17 @@ public interface ComputerDAO {
 
 	Computer findById(int id) throws DAOException;
 
-	List<Computer> list() throws DAOException;
+	List<Computer> list(int start, int size) throws DAOException;
 	
-	List<Computer> list(String search) throws DAOException;
+	List<Computer> list(int start, int size, int sort) throws DAOException;
+	
+	List<Computer> list(int start, int size, String search) throws DAOException;
+	
+	List<Computer> list(int start, int size, String search, int sort) throws DAOException;
+	
+	int getNumberComputers();
+	
+	int getNumberComputers(String search);
 
 	void delete(int id) throws DAOException;
 	

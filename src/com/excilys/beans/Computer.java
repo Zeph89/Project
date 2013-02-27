@@ -1,5 +1,6 @@
 package com.excilys.beans;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Computer {
@@ -40,6 +41,11 @@ public class Computer {
 	public Date getIntroducedDate() {
 		return introducedDate;
 	}
+	
+	public String getIntroducedDateFormat() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		return dateFormat.format(introducedDate);
+	}
 
 	public void setIntroducedDate(Date introducedDate) {
 		this.introducedDate = introducedDate;
@@ -47,6 +53,11 @@ public class Computer {
 
 	public Date getDiscontinuedDate() {
 		return discontinuedDate;
+	}
+	
+	public String getDiscontinuedDateFormat() {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+		return dateFormat.format(discontinuedDate);
 	}
 
 	public void setDiscontinuedDate(Date discontinuedDate) {
