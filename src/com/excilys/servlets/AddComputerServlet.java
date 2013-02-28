@@ -29,7 +29,7 @@ public class AddComputerServlet extends HttpServlet {
 	}
 	
 	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CompanyService cy = new CompanyServiceImpl();
+		CompanyService cy = CompanyServiceImpl.INSTANCE;
 		request.setAttribute("companies", cy.list());
 		
 		this.getServletContext().getRequestDispatcher("/insertComputer.jsp").forward(request, response);

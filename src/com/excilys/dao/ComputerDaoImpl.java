@@ -16,25 +16,20 @@ import java.util.List;
 import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
 
-public class ComputerDaoImpl implements ComputerDAO {
+public enum ComputerDaoImpl implements ComputerDAO {
+	
+	INSTANCE;
 
 	private static final String SQL_SELECT = "SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id ORDER BY UPPER(cp.name) limit ?,?";
 	private static final String SQL_SELECT_BY_ID = "SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id WHERE cp.id = ?";
 	private static final String SQL_INSERT = "INSERT INTO computer (name, introduced_date, discontinued_date, company_id) VALUES (?, ?, ?, ?)";
 	private static final String SQL_DELETE_BY_ID = "DELETE FROM computer WHERE id = ?";
 
-	private DAOFactory daoFactory;
-
-	public ComputerDaoImpl(DAOFactory daoFactory) {
-		this.daoFactory = daoFactory;
-	}
-
 	@Override
 	public void create(Computer computer, Connection connection) throws DAOException, SQLException {
 		PreparedStatement preparedStatement = null;
 		ResultSet valeursAutoGenerees = null;
 
-		connection = daoFactory.getConnection();
 		if (computer.getCompany() != null)
 			preparedStatement = initialisationRequetePreparee(connection,
 					SQL_INSERT, true, computer.getName(), computer.getIntroducedDate(),
@@ -67,7 +62,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		Computer computer = null;
 
 		try {
-			connexion = daoFactory.getConnection();
+			connexion = DataSourceFactory.INSTANCE.getConnection();
 			
 			preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_BY_ID, false, id);
 			resultSet = preparedStatement.executeQuery();
@@ -92,7 +87,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		List<Computer> computers = new ArrayList<Computer>();
 
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT);
 			preparedStatement.setInt(1, start);
 			preparedStatement.setInt(2, size);
@@ -137,7 +132,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 
 		req.append(" limit ?,?");
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement(req.toString());
 			preparedStatement.setInt(1, start);
 			preparedStatement.setInt(2, size);
@@ -163,7 +158,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		
 		int res = 0;
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			statement = connection.createStatement();
 
 			resultSet = statement.executeQuery("SELECT count(id) FROM computer;");
@@ -190,7 +185,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 			StringBuilder req = new StringBuilder("SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id as company_id, cn.name as company_name FROM computer cp " +
 					"LEFT JOIN company cn ON cp.company_id = cn.id WHERE UPPER(cp.name) LIKE ? ORDER BY UPPER(cp.name) limit ?,?");
 			
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement(req.toString());
 			preparedStatement.setString(1, "%"+search.toUpperCase()+"%");
 			preparedStatement.setInt(2, start);
@@ -238,7 +233,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		req.append(" limit ?,?");
 		
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement(req.toString());
 			preparedStatement.setString(1, "%"+search.toUpperCase()+"%");
 			preparedStatement.setInt(2, start);
@@ -265,7 +260,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		
 		int res = 0;
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement("SELECT COUNT(id) FROM computer WHERE UPPER(name) LIKE UPPER(?);");
 			preparedStatement.setString(1, "%"+search+"%");
 
@@ -386,13 +381,5 @@ public class ComputerDaoImpl implements ComputerDAO {
 		computer.setCompany(company);
 
 		return computer;
-	}
-
-	public DAOFactory getDaoFactory() {
-		return daoFactory;
-	}
-
-	public void setDaoFactory(DAOFactory daoFactory) {
-		this.daoFactory = daoFactory;
 	}
 }

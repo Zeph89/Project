@@ -15,7 +15,7 @@ public class InitialisationDaoFactory implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		ServletContext servletContext = event.getServletContext();
-		this.daoFactory = DAOFactory.getInstance();
+		this.daoFactory = DAOFactory.INSTANCE;
 		servletContext.setAttribute(ATT_DAO_FACTORY, this.daoFactory);
 	}
 

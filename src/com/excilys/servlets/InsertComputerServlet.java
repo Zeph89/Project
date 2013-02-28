@@ -65,7 +65,7 @@ public class InsertComputerServlet extends HttpServlet {
 		if (companyS.equals("") == false)
 			companyId = (Integer.parseInt(request.getParameter("company")));
 		
-		CompanyService cy = new CompanyServiceImpl();
+		CompanyService cy = CompanyServiceImpl.INSTANCE;
 		
 		if (!error) {
 			Computer c = new Computer();
@@ -78,7 +78,7 @@ public class InsertComputerServlet extends HttpServlet {
 			else
 				c.setCompany(null);
 			
-			ComputerService cd = new ComputerServiceImpl();
+			ComputerService cd = ComputerServiceImpl.INSTANCE;
 			cd.create(c);
 			
 			request.setAttribute("message", 1);

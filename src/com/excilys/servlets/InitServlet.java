@@ -33,7 +33,7 @@ public class InitServlet extends HttpServlet {
 	}
 	
 	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ComputerService cd = new ComputerServiceImpl();
+		ComputerService cd = ComputerServiceImpl.INSTANCE;
 
 		if(request.getParameter("page") == null || request.getParameter("page").equals(""))
 			request.setAttribute("page", 0);

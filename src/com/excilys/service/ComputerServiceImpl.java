@@ -9,30 +9,23 @@ import java.util.List;
 import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
 import com.excilys.dao.ComputerDAO;
-import com.excilys.dao.ComputerDaoImpl;
 import com.excilys.dao.DAOException;
 import com.excilys.dao.DAOFactory;
+import com.excilys.dao.DataSourceFactory;
 import com.excilys.dao.LogDAO;
-import com.excilys.dao.LogDaoImpl;
 
-public class ComputerServiceImpl implements ComputerService {
+public enum ComputerServiceImpl implements ComputerService {
 
-	private ComputerDAO cp;
-	private LogDAO lg;
-	private DAOFactory daoFactory;
-
-	public ComputerServiceImpl() {
-		this.daoFactory = DAOFactory.getInstance();
-		this.cp = new ComputerDaoImpl(daoFactory);
-		this.lg = new LogDaoImpl(daoFactory);
-		
-	}
+	INSTANCE;
+	
+	private ComputerDAO cp = DAOFactory.INSTANCE.getCp();
+	private LogDAO lg = DAOFactory.INSTANCE.getLg();
 
 	@Override
 	public void create(Computer computer) throws DAOException {
 		Connection connection = null;
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			connection.setAutoCommit(false);
 			
 			cp.create(computer, connection);
@@ -102,7 +95,7 @@ public class ComputerServiceImpl implements ComputerService {
 	public void delete(int id) throws DAOException {
 		Connection connection = null;
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			connection.setAutoCommit(false);
 			
 			Computer c = cp.findById(id);
@@ -137,7 +130,7 @@ public class ComputerServiceImpl implements ComputerService {
 			int newCompanyId) throws DAOException {
 		Connection connection = null;
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			connection.setAutoCommit(false);
 			
 			cp.update(oldComputer, newName, newIntroducedDate, newDiscontinuedDate,

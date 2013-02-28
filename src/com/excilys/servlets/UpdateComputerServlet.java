@@ -36,7 +36,7 @@ public class UpdateComputerServlet extends HttpServlet {
 		String discontinuedDate = request.getParameter("discontinued");
 		String companyS = request.getParameter("company");
 		
-		ComputerService cd = new ComputerServiceImpl();
+		ComputerService cd = ComputerServiceImpl.INSTANCE;
 		Computer c = cd.findById(id);
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,7 +80,7 @@ public class UpdateComputerServlet extends HttpServlet {
 			request.setAttribute("discontinuedDate", discontinuedDate);
 			request.setAttribute("companyId", c.getCompany().getId());
 			
-			CompanyService cy = new CompanyServiceImpl();
+			CompanyService cy = CompanyServiceImpl.INSTANCE;
 			request.setAttribute("companies", cy.list());
 			this.getServletContext().getRequestDispatcher("/updateComputer.jsp").forward(request, response);
 		}

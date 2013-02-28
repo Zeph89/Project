@@ -12,19 +12,15 @@ import java.util.List;
 
 import com.excilys.beans.Company;
 
-public class CompanyDaoImpl implements CompanyDAO {
+public enum CompanyDaoImpl implements CompanyDAO {
+	
+	INSTANCE;
 
 	private static final String SQL_SELECT = "SELECT id, name FROM company ORDER BY name";
 	private static final String SQL_SELECT_BY_ID = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_INSERT = "INSERT INTO company (name) VALUES (?)";
 	private static final String SQL_DELETE_BY_ID = "DELETE FROM company WHERE id = ?";
 
-	private DAOFactory daoFactory;
-	
-	public CompanyDaoImpl(DAOFactory daoFactory) {
-		this.daoFactory = daoFactory;
-	}
-	
 	@Override
 	public void create(Company company) throws DAOException {
 		Connection connexion = null;
@@ -32,7 +28,7 @@ public class CompanyDaoImpl implements CompanyDAO {
 		ResultSet valeursAutoGenerees = null;
 
 		try {
-			connexion = daoFactory.getConnection();
+			connexion = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = initialisationRequetePreparee(connexion,
 					SQL_INSERT, true, company.getName());
 
@@ -64,7 +60,7 @@ public class CompanyDaoImpl implements CompanyDAO {
 		Company company = null;
 
 		try {
-			connexion = daoFactory.getConnection();
+			connexion = DataSourceFactory.INSTANCE.getConnection();
 			
 			preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_BY_ID, false, id);
 			resultSet = preparedStatement.executeQuery();
@@ -89,7 +85,7 @@ public class CompanyDaoImpl implements CompanyDAO {
 		List<Company> companies = new ArrayList<Company>();
 
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -110,7 +106,7 @@ public class CompanyDaoImpl implements CompanyDAO {
 		PreparedStatement preparedStatement = null;
 
 		try {
-			connexion = daoFactory.getConnection();
+			connexion = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = initialisationRequetePreparee(connexion,
 					SQL_DELETE_BY_ID, true, id);
 			int statut = preparedStatement.executeUpdate();
@@ -132,14 +128,4 @@ public class CompanyDaoImpl implements CompanyDAO {
 
 		return company;
 	}
-
-	public DAOFactory getDaoFactory() {
-		return daoFactory;
-	}
-
-	public void setDaoFactory(DAOFactory daoFactory) {
-		this.daoFactory = daoFactory;
-	}
-
-
 }

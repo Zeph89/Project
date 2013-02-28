@@ -4,17 +4,14 @@ import java.util.List;
 
 import com.excilys.beans.Company;
 import com.excilys.dao.CompanyDAO;
-import com.excilys.dao.CompanyDaoImpl;
 import com.excilys.dao.DAOException;
 import com.excilys.dao.DAOFactory;
 
-public class CompanyServiceImpl implements CompanyService {
-
-	private CompanyDAO cy;
+public enum CompanyServiceImpl implements CompanyService {
 	
-	public CompanyServiceImpl() {
-		this.cy = new CompanyDaoImpl(DAOFactory.getInstance());
-	}
+	INSTANCE;
+
+	private CompanyDAO cy = DAOFactory.INSTANCE.getCy();
 	
 	@Override
 	public void create(Company company) throws DAOException {

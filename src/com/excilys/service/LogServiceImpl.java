@@ -7,16 +7,13 @@ import com.excilys.beans.Log;
 import com.excilys.dao.DAOException;
 import com.excilys.dao.DAOFactory;
 import com.excilys.dao.LogDAO;
-import com.excilys.dao.LogDaoImpl;
 
-public class LogServiceImpl implements LogService {
+public enum LogServiceImpl implements LogService {
 	
-	private LogDAO lg;
+	INSTANCE;
 	
-	public LogServiceImpl() {
-		this.lg = new LogDaoImpl(DAOFactory.getInstance());
-	}
-
+	private LogDAO lg = DAOFactory.INSTANCE.getLg();
+	
 	@Override
 	public void create(Log log) throws DAOException {
 		lg.create(log);

@@ -36,8 +36,8 @@ public class InfoComputerServlet extends HttpServlet {
 		int id = (Integer.parseInt(request.getParameter("id")));
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
-		ComputerService cd = new ComputerServiceImpl();
-		CompanyService cy = new CompanyServiceImpl();
+		ComputerService cd = ComputerServiceImpl.INSTANCE;
+		CompanyService cy = CompanyServiceImpl.INSTANCE;
 
 		Computer c = cd.findById(id);
 		request.setAttribute("id", c.getId());

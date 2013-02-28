@@ -13,19 +13,15 @@ import java.util.List;
 import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
 
-public class LogDaoImpl implements LogDAO {
+public enum LogDaoImpl implements LogDAO {
 
+	INSTANCE;
+	
 	private static final String SQL_SELECT = "SELECT id, description, computer_id, computer_name, log_date FROM log ORDER BY name";
 	private static final String SQL_SELECT_BY_ID = "SELECT id, description, computer_id, computer_name, log_date FROM log WHERE id = ?";
 	private static final String SQL_SELECT_BY_COMPUTER_ID = "SELECT id, description, computer_id, computer_name, log_date FROM log WHERE computer_id = ?";
 	private static final String SQL_INSERT = "INSERT INTO log (description, computer_id, computer_name, log_date) VALUES (?, ?, ?, ?)";
 
-	private DAOFactory daoFactory;
-	
-	public LogDaoImpl(DAOFactory daoFactory) {
-		this.daoFactory = daoFactory;
-	}
-	
 	@Override
 	public void create(Log log) throws DAOException {
 		Connection connexion = null;
@@ -33,7 +29,7 @@ public class LogDaoImpl implements LogDAO {
 		ResultSet valeursAutoGenerees = null;
 
 		try {
-			connexion = daoFactory.getConnection();
+			connexion = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = initialisationRequetePreparee(connexion,
 					SQL_INSERT, true, log.getDescription(), log.getComputerId(), log.getComputerName(), log.getDate());
 
@@ -65,7 +61,7 @@ public class LogDaoImpl implements LogDAO {
 		Log log = null;
 
 		try {
-			connexion = daoFactory.getConnection();
+			connexion = DataSourceFactory.INSTANCE.getConnection();
 			
 			preparedStatement = initialisationRequetePreparee(connexion, SQL_SELECT_BY_ID, false, id);
 			resultSet = preparedStatement.executeQuery();
@@ -90,7 +86,7 @@ public class LogDaoImpl implements LogDAO {
 		List<Log> logs = new ArrayList<Log>();
 
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -113,7 +109,7 @@ public class LogDaoImpl implements LogDAO {
 		List<Log> logs = new ArrayList<Log>();
 
 		try {
-			connection = daoFactory.getConnection();
+			connection = DataSourceFactory.INSTANCE.getConnection();
 			preparedStatement = connection.prepareStatement(SQL_SELECT_BY_COMPUTER_ID);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
