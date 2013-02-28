@@ -20,7 +20,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	
 	private ComputerDAO cp = DAOFactory.INSTANCE.getCp();
 	private LogDAO lg = DAOFactory.INSTANCE.getLg();
-
+	
 	@Override
 	public void create(Computer computer) throws DAOException {
 		Connection connection = null;
