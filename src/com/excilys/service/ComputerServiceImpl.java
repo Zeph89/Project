@@ -26,9 +26,11 @@ public enum ComputerServiceImpl implements ComputerService {
 		Connection connection = null;
 		try {
 			connection = DataSourceFactory.INSTANCE.getConnection();
+			DataSourceFactory.INSTANCE.getConnections().set(connection);
+			
 			connection.setAutoCommit(false);
 			
-			cp.create(computer, connection);
+			cp.create(computer);
 
 			Date now = Calendar.getInstance().getTime();
 
@@ -96,10 +98,12 @@ public enum ComputerServiceImpl implements ComputerService {
 		Connection connection = null;
 		try {
 			connection = DataSourceFactory.INSTANCE.getConnection();
+			DataSourceFactory.INSTANCE.getConnections().set(connection);
+			
 			connection.setAutoCommit(false);
 			
 			Computer c = cp.findById(id);
-			cp.delete(id, connection);
+			cp.delete(id);
 
 			Date now = Calendar.getInstance().getTime();
 
@@ -131,10 +135,12 @@ public enum ComputerServiceImpl implements ComputerService {
 		Connection connection = null;
 		try {
 			connection = DataSourceFactory.INSTANCE.getConnection();
+			DataSourceFactory.INSTANCE.getConnections().set(connection);
+			
 			connection.setAutoCommit(false);
 			
 			cp.update(oldComputer, newName, newIntroducedDate, newDiscontinuedDate,
-					newCompanyId, connection);
+					newCompanyId);
 
 			Date now = Calendar.getInstance().getTime();
 

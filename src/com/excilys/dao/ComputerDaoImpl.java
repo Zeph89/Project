@@ -26,7 +26,8 @@ public enum ComputerDaoImpl implements ComputerDAO {
 	private static final String SQL_DELETE_BY_ID = "DELETE FROM computer WHERE id = ?";
 
 	@Override
-	public void create(Computer computer, Connection connection) throws DAOException, SQLException {
+	public void create(Computer computer) throws DAOException, SQLException {
+		Connection connection = DataSourceFactory.INSTANCE.getConnections().get();
 		PreparedStatement preparedStatement = null;
 		ResultSet valeursAutoGenerees = null;
 
@@ -277,7 +278,8 @@ public enum ComputerDaoImpl implements ComputerDAO {
 	}
 
 	@Override
-	public void delete(int id, Connection connection) throws DAOException, SQLException {
+	public void delete(int id) throws DAOException, SQLException {
+		Connection connection = DataSourceFactory.INSTANCE.getConnections().get();
 		PreparedStatement preparedStatement = null;
 		preparedStatement = initialisationRequetePreparee(connection,
 				SQL_DELETE_BY_ID, true, id);
@@ -289,7 +291,8 @@ public enum ComputerDaoImpl implements ComputerDAO {
 	}
 	
 	@Override
-	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId, Connection connection) throws DAOException, SQLException  {
+	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId) throws DAOException, SQLException  {
+		Connection connection = DataSourceFactory.INSTANCE.getConnections().get();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		List<Integer> index = new ArrayList<Integer>();
 		StringBuilder req = new StringBuilder("UPDATE computer SET ");

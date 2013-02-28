@@ -1,6 +1,5 @@
 package com.excilys.dao;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,7 +7,7 @@ import com.excilys.beans.Computer;
 
 public interface ComputerDAO {
 	
-	void create(Computer computer, Connection connection) throws DAOException, SQLException;
+	void create(Computer computer) throws DAOException, SQLException;
 
 	Computer findById(int id) throws DAOException;
 
@@ -24,7 +23,7 @@ public interface ComputerDAO {
 	
 	int getNumberComputers(String search);
 
-	void delete(int id, Connection connection) throws DAOException, SQLException;
+	void delete(int id) throws DAOException, SQLException;
 	
-	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId, Connection connection) throws DAOException, SQLException;
+	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId) throws DAOException, SQLException;
 }

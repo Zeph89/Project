@@ -22,7 +22,8 @@ public enum DataSourceFactory {
 	private static final String PROPERTY_MOT_DE_PASSE = "password";
 
 	protected BoneCPDataSource connectionPool = null;
-	
+	protected ThreadLocal<Connection> connections = new ThreadLocal<Connection>(); 
+
 	private DataSourceFactory() {
 		initialize();
 	}
@@ -88,4 +89,8 @@ public enum DataSourceFactory {
    
     	return null;
     }
+
+	public ThreadLocal<Connection> getConnections() {
+		return connections;
+	} 
 }
