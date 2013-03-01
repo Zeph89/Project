@@ -25,9 +25,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	public void create(Computer computer) throws DAOException {
 		Connection connection = null;
 		try {
-			connection = DataSourceFactory.INSTANCE.getConnection();
-			DataSourceFactory.INSTANCE.getConnections().set(connection);
-			
+			connection = DataSourceFactory.INSTANCE.addConnection();
 			connection.setAutoCommit(false);
 			
 			cp.create(computer);
@@ -47,11 +45,7 @@ public enum ComputerServiceImpl implements ComputerService {
 		} catch (SQLException e) {
 			System.out.println("Échec de la création de l'ordinateur, aucune ligne ajoutée dans la table.");
 		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			DataSourceFactory.INSTANCE.closeConnectionThread();
 		}
 	}
 
@@ -97,9 +91,7 @@ public enum ComputerServiceImpl implements ComputerService {
 	public void delete(int id) throws DAOException {
 		Connection connection = null;
 		try {
-			connection = DataSourceFactory.INSTANCE.getConnection();
-			DataSourceFactory.INSTANCE.getConnections().set(connection);
-			
+			connection = DataSourceFactory.INSTANCE.addConnection();
 			connection.setAutoCommit(false);
 			
 			Computer c = cp.findById(id);
@@ -120,11 +112,7 @@ public enum ComputerServiceImpl implements ComputerService {
 		} catch (SQLException e) {
 			System.out.println("Échec de la suppression de l'ordinateur, aucune ligne supprimée de la table.");
 		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			DataSourceFactory.INSTANCE.closeConnectionThread();
 		}
 	}
 
@@ -134,9 +122,7 @@ public enum ComputerServiceImpl implements ComputerService {
 			int newCompanyId) throws DAOException {
 		Connection connection = null;
 		try {
-			connection = DataSourceFactory.INSTANCE.getConnection();
-			DataSourceFactory.INSTANCE.getConnections().set(connection);
-			
+			connection = DataSourceFactory.INSTANCE.addConnection();
 			connection.setAutoCommit(false);
 			
 			cp.update(oldComputer, newName, newIntroducedDate, newDiscontinuedDate,
@@ -157,11 +143,7 @@ public enum ComputerServiceImpl implements ComputerService {
 		} catch (SQLException e) {
 			System.out.println("Échec de la modification de l'ordinateur, aucune ligne modifiée de la table.");
 		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			DataSourceFactory.INSTANCE.closeConnectionThread();
 		}
 	}
 }

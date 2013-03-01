@@ -28,56 +28,54 @@ public enum DataSourceFactory {
 		initialize();
 	}
 
-    public synchronized void initialize() {
-    	if(connectionPool == null) {
-    		Properties properties = new Properties();
-			String url;
-			String driver;
-			String username;
-			String password;
-	
-			ClassLoader classLoader = Thread.currentThread()
-					.getContextClassLoader();
-			InputStream fichierProperties = classLoader
-					.getResourceAsStream(FICHIER_PROPERTIES);
-	
-			if (fichierProperties == null) {
-				throw new DAOConfigurationException("Le fichier properties "
-						+ FICHIER_PROPERTIES + " est introuvable.");
-			}
-	
-			try {
-				properties.load(fichierProperties);
-				url = properties.getProperty(PROPERTY_URL);
-				driver = properties.getProperty(PROPERTY_DRIVER);
-				username = properties.getProperty(PROPERTY_NOM_UTILISATEUR);
-				password = properties.getProperty(PROPERTY_MOT_DE_PASSE);
-			} catch (FileNotFoundException e) {
-				throw new DAOConfigurationException("Le fichier properties "
-						+ FICHIER_PROPERTIES + " est introuvable.", e);
-			} catch (IOException e) {
-				throw new DAOConfigurationException(
-						"Impossible de charger le fichier properties "
-								+ FICHIER_PROPERTIES, e);
-			}
-	
-			try {
-				Class.forName(driver);
-			} catch (ClassNotFoundException e) {
-				throw new DAOConfigurationException(
-						"Le driver est introuvable dans le classpath.", e);
-			}
+    private void initialize() {
+		Properties properties = new Properties();
+		String url;
+		String driver;
+		String username;
+		String password;
 
-	        BoneCPConfig config = new BoneCPConfig();
-	        config.setJdbcUrl(url);
-	        config.setUsername(username);
-	        config.setPassword(password);
-	        config.setMinConnectionsPerPartition(5);
-	        config.setMaxConnectionsPerPartition(10);
-	        config.setPartitionCount(2);
+		ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
+		InputStream fichierProperties = classLoader
+				.getResourceAsStream(FICHIER_PROPERTIES);
 
-	        connectionPool = new BoneCPDataSource(config);
-	    }
+		if (fichierProperties == null) {
+			throw new DAOConfigurationException("Le fichier properties "
+					+ FICHIER_PROPERTIES + " est introuvable.");
+		}
+
+		try {
+			properties.load(fichierProperties);
+			url = properties.getProperty(PROPERTY_URL);
+			driver = properties.getProperty(PROPERTY_DRIVER);
+			username = properties.getProperty(PROPERTY_NOM_UTILISATEUR);
+			password = properties.getProperty(PROPERTY_MOT_DE_PASSE);
+		} catch (FileNotFoundException e) {
+			throw new DAOConfigurationException("Le fichier properties "
+					+ FICHIER_PROPERTIES + " est introuvable.", e);
+		} catch (IOException e) {
+			throw new DAOConfigurationException(
+					"Impossible de charger le fichier properties "
+							+ FICHIER_PROPERTIES, e);
+		}
+
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			throw new DAOConfigurationException(
+					"Le driver est introuvable dans le classpath.", e);
+		}
+
+        BoneCPConfig config = new BoneCPConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(username);
+        config.setPassword(password);
+        config.setMinConnectionsPerPartition(5);
+        config.setMaxConnectionsPerPartition(10);
+        config.setPartitionCount(2);
+
+        connectionPool = new BoneCPDataSource(config);
     }
     
     public Connection getConnection() {
@@ -89,8 +87,29 @@ public enum DataSourceFactory {
    
     	return null;
     }
+    
+    public Connection addConnection() {
+    	try {
+    		Connection connection = connectionPool.getConnection();
+    		connections.set(connection);
+			return connection;
+		} catch (SQLException e) {
+			System.err.println("Error in DataSourceFactory.getConn:" + e.getMessage());
+		}
+   
+    	return null;
+    }
 
 	public ThreadLocal<Connection> getConnections() {
 		return connections;
 	} 
+	
+	public void closeConnectionThread() {
+		try {
+			connections.get().close();
+			connections.remove();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
