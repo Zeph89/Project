@@ -25,7 +25,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 	private static final String SQL_INSERT = "INSERT INTO computer (name, introduced_date, discontinued_date, company_id) VALUES (?, ?, ?, ?)";
 	private static final String SQL_DELETE_BY_ID = "DELETE FROM computer WHERE id = ?";
 
-	@Override
 	public void create(Computer computer) throws DAOException, SQLException {
 		Connection connection = DataSourceFactory.INSTANCE.getConnections().get();
 		PreparedStatement preparedStatement = null;
@@ -55,7 +54,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		}
 	}
 
-	@Override
 	public Computer findById(int id) throws DAOException {
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
@@ -80,7 +78,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		return computer;
 	}
 
-	@Override
 	public List<Computer> list(int start, int size) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -106,7 +103,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		return computers;
 	}
 	
-	@Override
 	public List<Computer> list(int start, int size, int sort) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -151,7 +147,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		return computers;
 	}
 	
-	@Override
 	public int getNumberComputers() {
 		Connection connection = null;
 		Statement statement = null;
@@ -175,7 +170,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		return res;
 	}
 	
-	@Override
 	public List<Computer> list(int start, int size, String search) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -205,7 +199,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		return computers;
 	}
 	
-	@Override
 	public List<Computer> list(int start, int size, String search, int sort) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -253,7 +246,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		return computers;
 	}
 	
-	@Override
 	public int getNumberComputers(String search) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -277,7 +269,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		return res;
 	}
 
-	@Override
 	public void delete(int id) throws DAOException, SQLException {
 		Connection connection = DataSourceFactory.INSTANCE.getConnections().get();
 		PreparedStatement preparedStatement = null;
@@ -290,7 +281,6 @@ public enum ComputerDaoImpl implements ComputerDAO {
 		}
 	}
 	
-	@Override
 	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId) throws DAOException, SQLException  {
 		Connection connection = DataSourceFactory.INSTANCE.getConnections().get();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

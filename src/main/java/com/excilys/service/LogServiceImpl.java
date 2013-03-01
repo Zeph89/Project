@@ -14,22 +14,18 @@ public enum LogServiceImpl implements LogService {
 	
 	private LogDAO lg = DAOFactory.INSTANCE.getLg();
 	
-	@Override
 	public void create(Log log) throws DAOException {
 		lg.create(log);
 	}
 
-	@Override
 	public Log findById(int id) throws DAOException {
 		return lg.findById(id);
 	}
 
-	@Override
 	public List<Log> list() throws DAOException {
 		return lg.list();
 	}
 
-	@Override
 	public List<Log> list(Computer c) throws DAOException {
 		return list(c);
 	}

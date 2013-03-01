@@ -21,7 +21,6 @@ public enum ComputerServiceImpl implements ComputerService {
 	private ComputerDAO cp = DAOFactory.INSTANCE.getCp();
 	private LogDAO lg = DAOFactory.INSTANCE.getLg();
 	
-	@Override
 	public void create(Computer computer) throws DAOException {
 		Connection connection = null;
 		try {
@@ -49,45 +48,37 @@ public enum ComputerServiceImpl implements ComputerService {
 		}
 	}
 
-	@Override
 	public Computer findById(int id) throws DAOException {
 		return cp.findById(id);
 	}
 
-	@Override
 	public List<Computer> list(int start, int size) throws DAOException {
 		return cp.list(start, size);
 	}
 
-	@Override
 	public List<Computer> list(int start, int size, int sort)
 			throws DAOException {
 		return cp.list(start, size, sort);
 	}
 
-	@Override
 	public List<Computer> list(int start, int size, String search)
 			throws DAOException {
 		return cp.list(start, size, search);
 	}
 
-	@Override
 	public List<Computer> list(int start, int size, String search, int sort)
 			throws DAOException {
 		return cp.list(start, size, search, sort);
 	}
 
-	@Override
 	public int getNumberComputers() {
 		return cp.getNumberComputers();
 	}
 
-	@Override
 	public int getNumberComputers(String search) {
 		return cp.getNumberComputers(search);
 	}
 
-	@Override
 	public void delete(int id) throws DAOException {
 		Connection connection = null;
 		try {
@@ -116,7 +107,6 @@ public enum ComputerServiceImpl implements ComputerService {
 		}
 	}
 
-	@Override
 	public void update(Computer oldComputer, String newName,
 			String newIntroducedDate, String newDiscontinuedDate,
 			int newCompanyId) throws DAOException {

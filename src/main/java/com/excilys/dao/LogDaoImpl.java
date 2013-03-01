@@ -22,7 +22,6 @@ public enum LogDaoImpl implements LogDAO {
 	private static final String SQL_SELECT_BY_COMPUTER_ID = "SELECT id, description, computer_id, computer_name, log_date FROM log WHERE computer_id = ?";
 	private static final String SQL_INSERT = "INSERT INTO log (description, computer_id, computer_name, log_date) VALUES (?, ?, ?, ?)";
 
-	@Override
 	public void create(Log log) throws DAOException {
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
@@ -53,7 +52,6 @@ public enum LogDaoImpl implements LogDAO {
 		}
 	}
 
-	@Override
 	public Log findById(int id) throws DAOException {
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
@@ -78,7 +76,6 @@ public enum LogDaoImpl implements LogDAO {
 		return log;
 	}
 
-	@Override
 	public List<Log> list() throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -101,7 +98,6 @@ public enum LogDaoImpl implements LogDAO {
 		return logs;
 	}
 
-	@Override
 	public List<Log> list(Computer c) throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;

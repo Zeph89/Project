@@ -21,7 +21,6 @@ public enum CompanyDaoImpl implements CompanyDAO {
 	private static final String SQL_INSERT = "INSERT INTO company (name) VALUES (?)";
 	private static final String SQL_DELETE_BY_ID = "DELETE FROM company WHERE id = ?";
 
-	@Override
 	public void create(Company company) throws DAOException {
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
@@ -52,7 +51,6 @@ public enum CompanyDaoImpl implements CompanyDAO {
 		}
 	}
 
-	@Override
 	public Company findById(int id) throws DAOException {
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
@@ -77,7 +75,6 @@ public enum CompanyDaoImpl implements CompanyDAO {
 		return company;
 	}
 
-	@Override
 	public List<Company> list() throws DAOException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -100,7 +97,6 @@ public enum CompanyDaoImpl implements CompanyDAO {
 		return companies;
 	}
 
-	@Override
 	public void delete(int id) throws DAOException {
 		Connection connexion = null;
 		PreparedStatement preparedStatement = null;
