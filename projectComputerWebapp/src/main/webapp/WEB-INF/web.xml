@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<servlet>
+		<servlet-name>InitServlet</servlet-name>
+		<servlet-class>com.excilys.servlets.InitServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>InfoComputerServlet</servlet-name>
+		<servlet-class>com.excilys.servlets.InfoComputerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>UpdateComputerServlet</servlet-name>
+		<servlet-class>com.excilys.servlets.UpdateComputerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DeleteComputerServlet</servlet-name>
+		<servlet-class>com.excilys.servlets.DeleteComputerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>AddComputerServlet</servlet-name>
+		<servlet-class>com.excilys.servlets.AddComputerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>InsertComputerServlet</servlet-name>
+		<servlet-class>com.excilys.servlets.InsertComputerServlet</servlet-class>
+	</servlet>
+</web-app>
