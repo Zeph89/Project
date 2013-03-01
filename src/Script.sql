@@ -20,7 +20,7 @@ CREATE TABLE LOG(
 	COMPUTER_ID int,
 	COMPUTER_NAME VARCHAR(50),
 	LOG_DATE TIMESTAMP(8),
-	PRIMARY KEY (ID)
+	PRIMARY KEY (ID),
 );
 
 insert into company (id,name) values (  1,'Apple Inc.');
