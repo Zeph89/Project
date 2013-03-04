@@ -10,13 +10,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
 
-public enum LogDaoImpl implements LogDAO {
+@Repository("LogDaoImpl")
+public class LogDaoImpl implements LogDAO {
 
-	INSTANCE;
-	
 	private static final String SQL_SELECT = "SELECT id, description, computer_id, computer_name, log_date FROM log ORDER BY name";
 	private static final String SQL_SELECT_BY_ID = "SELECT id, description, computer_id, computer_name, log_date FROM log WHERE id = ?";
 	private static final String SQL_SELECT_BY_COMPUTER_ID = "SELECT id, description, computer_id, computer_name, log_date FROM log WHERE computer_id = ?";

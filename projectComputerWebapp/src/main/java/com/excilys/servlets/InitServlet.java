@@ -9,15 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.beans.Computer;
 import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/InitServlet")
 public class InitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	public final int PAGE_SIZE = 10;
+	
+	@Autowired
+	private ComputerService cd;
 	
     public InitServlet() {
         super();
@@ -32,8 +36,6 @@ public class InitServlet extends HttpServlet {
 	}
 	
 	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ComputerService cd = ComputerServiceImpl.INSTANCE;
-
 		if(request.getParameter("page") == null || request.getParameter("page").equals(""))
 			request.setAttribute("page", 0);
 		else

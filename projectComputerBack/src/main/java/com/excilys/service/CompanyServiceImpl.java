@@ -2,16 +2,18 @@ package com.excilys.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.beans.Company;
 import com.excilys.dao.CompanyDAO;
 import com.excilys.dao.DAOException;
-import com.excilys.dao.DAOFactory;
 
-public enum CompanyServiceImpl implements CompanyService {
+@Service
+public class CompanyServiceImpl implements CompanyService {
 	
-	INSTANCE;
-
-	private CompanyDAO cy = DAOFactory.INSTANCE.getCy();
+	@Autowired
+	private CompanyDAO cy;
 	
 	public void create(Company company) throws DAOException {
 		cy.create(company);

@@ -6,20 +6,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
 import com.excilys.dao.ComputerDAO;
 import com.excilys.dao.DAOException;
-import com.excilys.dao.DAOFactory;
 import com.excilys.dao.DataSourceFactory;
 import com.excilys.dao.LogDAO;
 
-public enum ComputerServiceImpl implements ComputerService {
+@Service
+public class ComputerServiceImpl implements ComputerService {
 
-	INSTANCE;
+	@Autowired
+	private ComputerDAO cp;
 	
-	private ComputerDAO cp = DAOFactory.INSTANCE.getCp();
-	private LogDAO lg = DAOFactory.INSTANCE.getLg();
+	@Autowired
+	private LogDAO lg;
 	
 	public void create(Computer computer) throws DAOException {
 		Connection connection = null;

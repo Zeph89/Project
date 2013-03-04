@@ -1,4 +1,4 @@
 <%
-	String redirectURL = "/projectComputerWebapp/InitServlet";
+	String redirectURL = "/projectComputerWebapp/InitServlet.go";
 	response.sendRedirect(redirectURL);
 %>

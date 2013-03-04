@@ -8,12 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.service.CompanyService;
-import com.excilys.service.CompanyServiceImpl;
 
 @WebServlet("/AddComputerServlet")
 public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	private CompanyService cy;
        
     public AddComputerServlet() {
         super();
@@ -29,7 +33,6 @@ public class AddComputerServlet extends HttpServlet {
 	}
 	
 	private void doAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		CompanyService cy = CompanyServiceImpl.INSTANCE;
 		request.setAttribute("companies", cy.list());
 		
 		this.getServletContext().getRequestDispatcher("/insertComputer.jsp").forward(request, response);

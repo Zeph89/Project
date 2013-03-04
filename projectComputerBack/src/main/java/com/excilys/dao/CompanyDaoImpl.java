@@ -10,12 +10,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.excilys.beans.Company;
 
-public enum CompanyDaoImpl implements CompanyDAO {
+@Repository("CompanyDaoImpl")
+public class CompanyDaoImpl implements CompanyDAO {
 	
-	INSTANCE;
-
 	private static final String SQL_SELECT = "SELECT id, name FROM company ORDER BY name";
 	private static final String SQL_SELECT_BY_ID = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_INSERT = "INSERT INTO company (name) VALUES (?)";

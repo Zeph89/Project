@@ -13,13 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
 
-public enum ComputerDaoImpl implements ComputerDAO {
+@Repository("ComputerDaoImpl")
+public class ComputerDaoImpl implements ComputerDAO {
 	
-	INSTANCE;
-
 	private static final String SQL_SELECT = "SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id ORDER BY UPPER(cp.name) limit ?,?";
 	private static final String SQL_SELECT_BY_ID = "SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id WHERE cp.id = ?";
 	private static final String SQL_INSERT = "INSERT INTO computer (name, introduced_date, discontinued_date, company_id) VALUES (?, ?, ?, ?)";

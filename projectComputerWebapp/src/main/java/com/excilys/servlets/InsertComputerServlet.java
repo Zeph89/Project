@@ -11,16 +11,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.beans.Computer;
 import com.excilys.service.CompanyService;
-import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/InsertComputerServlet")
 public class InsertComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	@Autowired
+	private ComputerService cd;
+	
+	@Autowired
+	private CompanyService cy;
+	
     public InsertComputerServlet() {
         super();
         // TODO Auto-generated constructor stub
@@ -65,8 +71,6 @@ public class InsertComputerServlet extends HttpServlet {
 		if (companyS.equals("") == false)
 			companyId = (Integer.parseInt(request.getParameter("company")));
 		
-		CompanyService cy = CompanyServiceImpl.INSTANCE;
-		
 		if (!error) {
 			Computer c = new Computer();
 			c.setName(name);
@@ -77,8 +81,7 @@ public class InsertComputerServlet extends HttpServlet {
 				c.setCompany(cy.findById(companyId));
 			else
 				c.setCompany(null);
-			
-			ComputerService cd = ComputerServiceImpl.INSTANCE;
+		
 			cd.create(c);
 			
 			request.setAttribute("message", 1);

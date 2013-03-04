@@ -10,16 +10,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.beans.Computer;
 import com.excilys.service.CompanyService;
-import com.excilys.service.CompanyServiceImpl;
 import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/UpdateComputerServlet")
 public class UpdateComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	@Autowired
+	private ComputerService cd;
+	
+	@Autowired
+	private CompanyService cy;
+	
     public UpdateComputerServlet() {
         super();
         // TODO Auto-generated constructor stub
@@ -36,7 +42,6 @@ public class UpdateComputerServlet extends HttpServlet {
 		String discontinuedDate = request.getParameter("discontinued");
 		String companyS = request.getParameter("company");
 		
-		ComputerService cd = ComputerServiceImpl.INSTANCE;
 		Computer c = cd.findById(id);
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,7 +85,6 @@ public class UpdateComputerServlet extends HttpServlet {
 			request.setAttribute("discontinuedDate", discontinuedDate);
 			request.setAttribute("companyId", c.getCompany().getId());
 			
-			CompanyService cy = CompanyServiceImpl.INSTANCE;
 			request.setAttribute("companies", cy.list());
 			this.getServletContext().getRequestDispatcher("/updateComputer.jsp").forward(request, response);
 		}

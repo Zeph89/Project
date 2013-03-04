@@ -8,12 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.excilys.service.ComputerService;
-import com.excilys.service.ComputerServiceImpl;
 
 @WebServlet("/DeleteComputerServlet")
 public class DeleteComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	private ComputerService cd;
        
     public DeleteComputerServlet() {
         super();
@@ -21,8 +25,7 @@ public class DeleteComputerServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id = (Integer.parseInt(request.getParameter("id")));
-		ComputerService cd = ComputerServiceImpl.INSTANCE;
-		
+
 		request.setAttribute("message", 3);
 		request.setAttribute("nameMess", cd.findById(id).getName());
 		
