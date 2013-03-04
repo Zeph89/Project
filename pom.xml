@@ -5,21 +5,11 @@
 	<groupId>projectComputer</groupId>
 	<artifactId>projectComputer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>war</packaging>
 	<name>Project Computer Webapp</name>
 	<url>http://maven.apache.org</url>
 	<build>
-		<finalName>ProjectComputer</finalName>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
+		<finalName>projectComputer</finalName>
 	</build>
 	<properties>
 		<jstl.version>1.2</jstl.version>
