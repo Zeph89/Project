@@ -1,29 +1,28 @@
 package com.excilys.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.excilys.beans.Computer;
 
 public interface ComputerDAO {
 	
-	void create(Computer computer) throws DAOException, SQLException;
+	void create(Computer computer);
 
-	Computer findById(int id) throws DAOException;
+	Computer findById(int id);
 
-	List<Computer> list(int start, int size) throws DAOException;
+	List<Computer> list(int start, int size);
 	
-	List<Computer> list(int start, int size, int sort) throws DAOException;
+	List<Computer> list(int start, int size, int sort);
 	
-	List<Computer> list(int start, int size, String search) throws DAOException;
+	List<Computer> list(int start, int size, String search);
 	
-	List<Computer> list(int start, int size, String search, int sort) throws DAOException;
+	List<Computer> list(int start, int size, String search, int sort);
 	
 	int getNumberComputers();
 	
 	int getNumberComputers(String search);
 
-	void delete(int id) throws DAOException, SQLException;
+	void delete(int id);
 	
-	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId) throws DAOException, SQLException;
+	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId);
 }

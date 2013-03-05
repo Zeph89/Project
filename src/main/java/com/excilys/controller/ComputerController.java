@@ -218,7 +218,7 @@ public class ComputerController {
 				c.setIntroducedDate(introduced);
 				c.setDiscontinuedDate(discontinued);
 				
-				if (companyId != 0)
+				if (companyId != -1)
 					c.setCompany(cy.findById(companyId));
 				else
 					c.setCompany(null);
