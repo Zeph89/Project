@@ -1,4 +1,4 @@
 <%
-	String redirectURL = "/projectComputerWebapp/dashboard.html";
+	String redirectURL = "/projectComputer/dashboard.html";
 	response.sendRedirect(redirectURL);
 %>

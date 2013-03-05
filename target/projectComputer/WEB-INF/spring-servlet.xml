@@ -19,5 +19,5 @@
         <property name="suffix" value=".jsp" />
     </bean>
     
-	<context:component-scan base-package="com.excilys" />
+	<context:component-scan base-package="com.excilys.controller" />
 </beans>

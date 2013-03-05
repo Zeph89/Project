@@ -99,7 +99,10 @@ public class ComputerController {
 		else
 			model.addAttribute("discontinuedDate", "");
 		
-		model.addAttribute("companyId", c.getCompany().getId());
+		if (c.getCompany() == null)
+			model.addAttribute("companyId", -1);
+		else
+			model.addAttribute("companyId", c.getCompany().getId());
 		model.addAttribute("companies", cy.list());
 		
 		return "updateComputer";
@@ -152,10 +155,10 @@ public class ComputerController {
 		
 		if (!error) {
 			if (companyId == null)
-				companyId = -1;
-			
-			cd.update(c, name, introducedDate, discontinuedDate, companyId);
-			
+				cd.update(c, name, introducedDate, discontinuedDate, null);
+			else
+				cd.update(c, name, introducedDate, discontinuedDate, cy.findById(companyId));
+	
 			model.addAttribute("message", 2);
 			model.addAttribute("nameMess", c.getName());
 	
@@ -165,8 +168,11 @@ public class ComputerController {
 			model.addAttribute("name", name);
 			model.addAttribute("introducedDate", introducedDate);
 			model.addAttribute("discontinuedDate", discontinuedDate);
-			model.addAttribute("companyId", c.getCompany().getId());
 			
+			if (c.getCompany() == null)
+				model.addAttribute("companyId", -1);
+			else
+				model.addAttribute("companyId", c.getCompany().getId());
 			model.addAttribute("companies", cy.list());
 			return "updateComputer";
 		}
@@ -212,7 +218,6 @@ public class ComputerController {
 				companyId = -1;
 			
 			if (!error) {
-				System.out.println("OK");
 				Computer c = new Computer();
 				c.setName(name);
 				c.setIntroducedDate(introduced);
@@ -230,7 +235,6 @@ public class ComputerController {
 	
 				return "redirect:dashboard.html";
 			} else {
-				System.out.println("PAS OK");
 				model.addAttribute("name", name);
 				model.addAttribute("introducedDate", introducedDate);
 				model.addAttribute("discontinuedDate", discontinuedDate);

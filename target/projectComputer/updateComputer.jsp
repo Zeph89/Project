@@ -13,10 +13,10 @@
 
 	<section id="main">
 		<h1>Edit computer</h1>
-			<form action="/projectComputerWebapp/UpdateComputerServlet" method="POST">
+			<form action="/projectComputer/updateComputer.html" method="POST">
 				<%@ include file="infoComputer.jsp" %>
 			</form>
-		<form action="/projectComputerWebapp/DeleteComputerServlet" method="GET" class="topRight">
+		<form action="/projectComputer/deleteComputer.html" method="GET" class="topRight">
 			<input type="hidden" name="id" value="${id}" >
 			<input type="submit" value="Delete this computer" class="btn danger">
 		</form>

@@ -1,7 +1,8 @@
 package com.excilys.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.beans.Log;
@@ -10,10 +11,10 @@ import com.excilys.beans.Log;
 public class LogDaoImpl implements LogDAO {
 
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private SessionFactory sessionFactory;
 	
 	public void create(Log log) {
-		jdbcTemplate.update("INSERT INTO log (description, computer_id, computer_name, log_date) VALUES (?, ?, ?, ?)",
-			        new Object[] { log.getDescription(), log.getComputerId(), log.getComputerName(), log.getDate() });
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(log);
 	}
 }

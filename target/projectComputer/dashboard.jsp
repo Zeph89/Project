@@ -46,14 +46,14 @@
 			</c:when>
 		</c:choose>
 		<div id="actions">
-			<form action="/projectComputerWebapp/InitServlet" method="GET">
+			<form action="/projectComputer/dashboard.html" method="GET">
 				<input type="search" id="searchbox" name="search" value="<c:if test="${param.search != null}">${param.search}</c:if>"
 					placeholder="Filter by computer name..."> 
 				<input type="submit" id="searchsubmit" value="Filter by name"
 					class="btn primary">
 			</form>
 			<a class="btn success" id="add"
-				href="/projectComputerWebapp/AddComputerServlet">Add a new computer</a>
+				href="/projectComputer/insertComputer.html">Add a new computer</a>
 		</div>
 
 		<table class="computers zebra-striped">
@@ -64,7 +64,7 @@
 						<c:if test="${sort > 0}">headerSortUp</c:if>
 						<c:if test="${sort < 0}">headerSortDown</c:if>
 					">
-						<a href="InitServlet?
+						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-1</c:if>
 							<c:if test="${sort > 0}">sort=1</c:if>
 							<c:if test="${sort < 0}">sort=-1</c:if>
@@ -76,7 +76,7 @@
 						<c:if test="${sort > 0}">headerSortUp</c:if>
 						<c:if test="${sort < 0}">headerSortDown</c:if>
 					">
-						<a href="InitServlet?
+						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-2</c:if>
 							<c:if test="${sort > 0}">sort=2</c:if>
 							<c:if test="${sort < 0}">sort=-2</c:if>
@@ -88,7 +88,7 @@
 						<c:if test="${sort > 0}">headerSortUp</c:if>
 						<c:if test="${sort < 0}">headerSortDown</c:if>
 					">
-						<a href="InitServlet?
+						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-3</c:if>
 							<c:if test="${sort > 0}">sort=3</c:if>
 							<c:if test="${sort < 0}">sort=-3</c:if>
@@ -100,7 +100,7 @@
 						<c:if test="${sort > 0}">headerSortUp</c:if>
 						<c:if test="${sort < 0}">headerSortDown</c:if>
 					">
-						<a href="InitServlet?
+						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-4</c:if>
 							<c:if test="${sort > 0}">sort=4</c:if>
 							<c:if test="${sort < 0}">sort=-4</c:if>
@@ -113,7 +113,7 @@
 				<c:forEach var="computer" items="${computers}">
 					<tr>
 						<td><a
-							href="/projectComputerWebapp/InfoComputerServlet?id=${computer.id}">${computer.name}</a></td>
+							href="/projectComputer/infoComputer.html?id=${computer.id}">${computer.name}</a></td>
 						<td><c:choose>
 								<c:when test="${computer.introducedDate != null}"> ${computer.introducedDateFormat} </c:when>
 								<c:otherwise>
@@ -143,7 +143,7 @@
 					<li class="prev disabled"><a>&larr; Previous</a></li>
 				</c:when>
 				<c:otherwise>
-					<li class="prev"><a href="InitServlet?page=${page - 1}
+					<li class="prev"><a href="dashboard.html?page=${page - 1}
 					<c:if test="${param.search != null}">&search=${param.search}</c:if>">&larr;
 							Previous</a></li>
 				</c:otherwise>
@@ -164,7 +164,7 @@
 					<li class="next disabled"><a>Next &rarr;</a></li>
 				</c:when>
 				<c:otherwise>
-					<li class="next"><a href="InitServlet?page=${page + 1}
+					<li class="next"><a href="dashboard.html?page=${page + 1}
 					<c:if test="${param.search != null}">&search=${param.search}</c:if>">Next
 							&rarr;</a></li>
 				</c:otherwise>

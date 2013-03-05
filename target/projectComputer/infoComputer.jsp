@@ -70,5 +70,5 @@
 </fieldset>
 <div class="actions">
 	<input type="submit" value="Save this computer" class="btn primary">
-	or <a href="/projectComputerWebapp/InitServlet" class="btn">Cancel</a>
+	or <a href="/projectComputer/dashboard.html" class="btn">Cancel</a>
 </div>

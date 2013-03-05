@@ -2,6 +2,7 @@ package com.excilys.service;
 
 import java.util.List;
 
+import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
 
 public interface ComputerService {
@@ -24,6 +25,6 @@ public interface ComputerService {
 
 	void delete(int id);
 	
-	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId);
+	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, Company newCompany);
 
 }

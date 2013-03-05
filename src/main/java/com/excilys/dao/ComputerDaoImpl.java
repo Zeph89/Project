@@ -1,194 +1,159 @@
 package com.excilys.dao;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
-import com.excilys.mapper.ComputerRowMapper;
 
 @Repository("ComputerDaoImpl")
 public class ComputerDaoImpl implements ComputerDAO {
 	
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private SessionFactory sessionFactory;
 	
 	public void create(Computer computer) {
-		if (computer.getCompany() != null)
-			jdbcTemplate.update("INSERT INTO computer (name, introduced_date, discontinued_date, company_id) VALUES (?, ?, ?, ?)",
-			        new Object[] { computer.getName(), computer.getIntroducedDate(), computer.getDiscontinuedDate(), computer.getCompany().getId() });
-		else
-			jdbcTemplate.update("INSERT INTO computer (name, introduced_date, discontinued_date, company_id) VALUES (?, ?, ?, ?)",
-			        new Object[] { computer.getName(), computer.getIntroducedDate(), computer.getDiscontinuedDate(), null });
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(computer);
 	}
 
 	public Computer findById(int id) {
-		return jdbcTemplate.queryForObject("SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id as company_id, " +
-				"cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id WHERE cp.id = ?",
-	            new Object[] { id },
-	            new ComputerRowMapper());
+		return (Computer)sessionFactory.getCurrentSession().get(Computer.class, id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Computer> list(int start, int size) {
-		return jdbcTemplate.query("SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, " +
-				"cn.id as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id ORDER BY UPPER(cp.name) limit ?,?",
-				new Object[] { start, size },
-	            new ComputerRowMapper());
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Computer.class);
+		criteria.setFirstResult(start);
+		criteria.setMaxResults(size);
+		criteria.addOrder(Order.asc("name").ignoreCase());
+		
+		return criteria.list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Computer> list(int start, int size, int sort) {
-		StringBuilder query = new StringBuilder("SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id, " +
-				"cn.name as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id ORDER BY");
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Computer.class);
+		criteria.createAlias("company", "cy", JoinType.LEFT_OUTER_JOIN);
 		
 		if (sort == 1)
-			query.append(" UPPER(cp.name) ASC");
+			criteria.addOrder(Order.asc("name").ignoreCase());
 		else if (sort == -1)
-			query.append(" UPPER(cp.name) DESC");
+			criteria.addOrder(Order.desc("name").ignoreCase());
 		else if (sort == 2)
-			query.append(" cp.introduced_date ASC");
+			criteria.addOrder(Order.asc("introducedDate").ignoreCase());
 		else if (sort == -2)
-			query.append(" cp.introduced_date DESC");
+			criteria.addOrder(Order.desc("introducedDate").ignoreCase());
 		else if (sort == 3)
-			query.append(" cp.discontinued_date ASC");
+			criteria.addOrder(Order.asc("discontinuedDate").ignoreCase());
 		else if (sort == -3)
-			query.append(" cp.discontinued_date DESC");
+			criteria.addOrder(Order.desc("discontinuedDate").ignoreCase());
 		else if (sort == 4)
-			query.append(" UPPER(cn.name) ASC");
+			criteria.addOrder(Order.asc("cy.name").ignoreCase());
 		else if (sort == -4)
-			query.append(" UPPER(cn.name) DESC");
-
-		query.append(" limit ?,?");
+			criteria.addOrder(Order.desc("cy.name").ignoreCase());
 		
-		return jdbcTemplate.query(query.toString(),
-				new Object[] { start, size },
-	            new ComputerRowMapper());
+		criteria.setFirstResult(start);
+		criteria.setMaxResults(size);
+
+		return criteria.list();
 	}
 	
 	public int getNumberComputers() {
-		return jdbcTemplate.queryForInt("SELECT count(id) FROM computer");
+		return ((Long) sessionFactory.getCurrentSession()
+				.createCriteria(Computer.class)
+				.setProjection(Projections.rowCount()).uniqueResult())
+				.intValue();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Computer> list(int start, int size, String search) {
-		return jdbcTemplate.query("SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, " +
-				"cn.id as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id " +
-				"WHERE UPPER(cp.name) LIKE ? ORDER BY UPPER(cp.name) limit ?,?",
-				new Object[] { "%"+search.toUpperCase()+"%", start, size },
-	            new ComputerRowMapper());
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Computer.class);
+		criteria.setFirstResult(start);
+		criteria.setMaxResults(size);
+		criteria.add(Restrictions.like("name", "%"+search+"%").ignoreCase()); 
+		criteria.addOrder(Order.asc("name"));
+		
+		return criteria.list();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Computer> list(int start, int size, String search, int sort) {
-		StringBuilder query = new StringBuilder("SELECT cp.id, cp.name, cp.introduced_date, cp.discontinued_date, cp.company_id, cn.id, " +
-				"cn.name as company_id, cn.name as company_name FROM computer cp LEFT JOIN company cn ON cp.company_id = cn.id " +
-				"WHERE UPPER(cp.name) LIKE ? ORDER BY ");
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Computer.class);
+		criteria.createAlias("company", "cy", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.like("name", "%"+search+"%").ignoreCase()); 
 		
 		if (sort == 1)
-			query.append(" UPPER(cp.name) ASC");
+			criteria.addOrder(Order.asc("name").ignoreCase());
 		else if (sort == -1)
-			query.append(" UPPER(cp.name) DESC");
+			criteria.addOrder(Order.desc("name").ignoreCase());
 		else if (sort == 2)
-			query.append(" cp.introduced_date ASC");
+			criteria.addOrder(Order.asc("introducedDate").ignoreCase());
 		else if (sort == -2)
-			query.append(" cp.introduced_date DESC");
+			criteria.addOrder(Order.desc("introducedDate").ignoreCase());
 		else if (sort == 3)
-			query.append(" cp.discontinued_date ASC");
+			criteria.addOrder(Order.asc("discontinuedDate").ignoreCase());
 		else if (sort == -3)
-			query.append(" cp.discontinued_date DESC");
+			criteria.addOrder(Order.desc("discontinuedDate").ignoreCase());
 		else if (sort == 4)
-			query.append(" UPPER(cn.name) ASC");
+			criteria.addOrder(Order.asc("cy.name").ignoreCase());
 		else if (sort == -4)
-			query.append(" UPPER(cn.name) DESC");
-
-		query.append(" limit ?,?");
+			criteria.addOrder(Order.desc("cy.name").ignoreCase());
 		
-		return jdbcTemplate.query(query.toString(),
-				new Object[] { "%"+search.toUpperCase()+"%", start, size },
-	            new ComputerRowMapper());
+		criteria.setFirstResult(start);
+		criteria.setMaxResults(size);
+		
+		return criteria.list();
 	}
 	
 	public int getNumberComputers(String search) {
-		return jdbcTemplate.queryForInt("SELECT COUNT(id) FROM computer WHERE UPPER(name) LIKE UPPER(?)",
-				new Object[] { "%"+search.toUpperCase()+"%" });
+		return ((Long) sessionFactory.getCurrentSession()
+				.createCriteria(Computer.class)
+				.add(Restrictions.like("name", "%"+search+"%").ignoreCase())
+				.setProjection(Projections.rowCount()).uniqueResult())
+				.intValue();
 	}
 
 	public void delete(int id) {
-		jdbcTemplate.update("DELETE FROM computer WHERE id = ?",
-		        new Object[] { id });
+		Computer computer = findById(id);
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(computer);
 	}
 	
-	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId)  {
+	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, Company newCompany)  {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		List<Integer> index = new ArrayList<Integer>();
-		List<Object> args = new ArrayList<Object>();
-		StringBuilder query = new StringBuilder("UPDATE computer SET ");
-		
-		if (oldComputer.getName().equals(newName) == false) {
-			query.append("name=?");
-			index.add(0);
-		}
-		
-		String oldIntroducedDate = "";
-		if (oldComputer.getIntroducedDate() != null)
-			oldIntroducedDate = dateFormat.format(oldComputer.getIntroducedDate());
-		
-		if (oldIntroducedDate.equals(newIntroducedDate) == false) {
-			if (index.size() != 0) 
-				query.append(", ");
-		
-			query.append("introduced_date=?");
-			index.add(1);
-		}
-		
-		String oldDiscontinuedDate = "";
-		if (oldComputer.getDiscontinuedDate() != null)
-			oldDiscontinuedDate = dateFormat.format(oldComputer.getDiscontinuedDate());
-			
-		if (oldDiscontinuedDate.equals(newDiscontinuedDate) == false) {
-			if (index.size() != 0) 
-				query.append(", ");
-			
-			query.append("discontinued_date=?");
-			index.add(2);
-		}
 
-		if (oldComputer.getCompany().getId() != newCompanyId) {
-			if (index.size() != 0) 
-				query.append(", ");
+		oldComputer.setName(newName);
+		
+		try {
+			if (newIntroducedDate.equals(""))
+				oldComputer.setIntroducedDate(null);
+			else
+				oldComputer.setIntroducedDate(dateFormat.parse(newIntroducedDate));
 			
-			query.append("company_id=?");
-			index.add(3);
-		}
+			if (newDiscontinuedDate.equals(""))
+				oldComputer.setDiscontinuedDate(null);
+			else
+				oldComputer.setDiscontinuedDate(dateFormat.parse(newDiscontinuedDate));
+		} catch(Exception e) {}
 		
-		query.append(" WHERE id=?");
+		oldComputer.setCompany(newCompany);
 		
-		if (index.size() != 0) {
-			for (int i=0; i<index.size(); i++) {
-				if (index.get(i) == 0) {
-					args.add(newName);
-				} else if (index.get(i) == 1) {
-					if (newIntroducedDate.equals("") == false)
-						args.add(java.sql.Date.valueOf(newIntroducedDate));
-					else
-						args.add(null);
-				} else if (index.get(i) == 2) {
-					if (newDiscontinuedDate.equals("") == false)
-						args.add(java.sql.Date.valueOf(newDiscontinuedDate));
-					else
-						args.add(null);
-				} else if (index.get(i) == 3) {
-					if (newCompanyId != -1)
-						args.add(newCompanyId);
-					else
-						args.add(null);
-				}
-			}
-			args.add(oldComputer.getId());
-
-			jdbcTemplate.update(query.toString(),
-			        args.toArray());
-		}
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(oldComputer);
 	}
 }

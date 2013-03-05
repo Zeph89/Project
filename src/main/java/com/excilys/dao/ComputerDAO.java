@@ -2,6 +2,7 @@ package com.excilys.dao;
 
 import java.util.List;
 
+import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
 
 public interface ComputerDAO {
@@ -24,5 +25,5 @@ public interface ComputerDAO {
 
 	void delete(int id);
 	
-	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, int newCompanyId);
+	void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, Company newCompany);
 }

@@ -3,12 +3,38 @@ package com.excilys.beans;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table (name= "computer")
 public class Computer {
 
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
 	private int id;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "introduced_date")
 	private Date introducedDate;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "discontinued_date")
 	private Date discontinuedDate;
+	
+	@ManyToOne
+    @JoinColumn(name="company_id")
 	private Company company;
 	
 	public Computer() {}

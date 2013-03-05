@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
 import com.excilys.dao.ComputerDAO;
@@ -37,30 +38,37 @@ public class ComputerServiceImpl implements ComputerService {
 		lg.create(log);
 	}
 
+	@Transactional(readOnly=true)
 	public Computer findById(int id) {
 		return cp.findById(id);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Computer> list(int start, int size) {
 		return cp.list(start, size);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Computer> list(int start, int size, int sort) {
 		return cp.list(start, size, sort);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Computer> list(int start, int size, String search) {
 		return cp.list(start, size, search);
 	}
 
+	@Transactional(readOnly=true)
 	public List<Computer> list(int start, int size, String search, int sort) {
 		return cp.list(start, size, search, sort);
 	}
 
+	@Transactional(readOnly=true)
 	public int getNumberComputers() {
 		return cp.getNumberComputers();
 	}
 
+	@Transactional(readOnly=true)
 	public int getNumberComputers(String search) {
 		return cp.getNumberComputers(search);
 	}
@@ -84,9 +92,9 @@ public class ComputerServiceImpl implements ComputerService {
 	@Transactional
 	public void update(Computer oldComputer, String newName,
 			String newIntroducedDate, String newDiscontinuedDate,
-			int newCompanyId) {
+			Company newCompany) {
 		cp.update(oldComputer, newName, newIntroducedDate, newDiscontinuedDate,
-				newCompanyId);
+				newCompany);
 
 		Date now = Calendar.getInstance().getTime();
 

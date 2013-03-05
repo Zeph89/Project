@@ -2,12 +2,34 @@ package com.excilys.beans;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table (name= "log")
 public class Log {
 
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
 	private int id;
+	
+	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "computer_id")
 	private int computerId;
+	
+	@Column(name = "computer_name")
 	private String computerName;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name = "log_date")
 	private Date date;
 	
 	public Log() {}
