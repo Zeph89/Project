@@ -1,137 +1,92 @@
 package com.excilys.dao;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
+import com.excilys.repository.ComputerRepository;
 
 @Repository("ComputerDaoImpl")
 public class ComputerDaoImpl implements ComputerDAO {
 	
 	@Autowired
-	private SessionFactory sessionFactory;
+	private ComputerRepository computerRepository;
 	
 	public void create(Computer computer) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(computer);
+		computerRepository.save(computer);
 	}
 
 	public Computer findById(int id) {
-		return (Computer)sessionFactory.getCurrentSession().get(Computer.class, id);
+		return computerRepository.findOne(id);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Computer> list(int start, int size) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Computer.class);
-		criteria.setFirstResult(start);
-		criteria.setMaxResults(size);
-		criteria.addOrder(Order.asc("name").ignoreCase());
-		
-		return criteria.list();
+	public Page<Computer> list(int start, int size) {
+		return computerRepository.findAll(constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Computer> list(int start, int size, int sort) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Computer.class);
-		criteria.createAlias("company", "cy", JoinType.LEFT_OUTER_JOIN);
+	public Page<Computer> list(int start, int size, int sort) {
+		Direction d = null;
+		if (sort > 0)
+			d = Sort.Direction.ASC;
+		else
+			d = Sort.Direction.DESC;
 		
-		if (sort == 1)
-			criteria.addOrder(Order.asc("name").ignoreCase());
-		else if (sort == -1)
-			criteria.addOrder(Order.desc("name").ignoreCase());
-		else if (sort == 2)
-			criteria.addOrder(Order.asc("introducedDate").ignoreCase());
-		else if (sort == -2)
-			criteria.addOrder(Order.desc("introducedDate").ignoreCase());
-		else if (sort == 3)
-			criteria.addOrder(Order.asc("discontinuedDate").ignoreCase());
-		else if (sort == -3)
-			criteria.addOrder(Order.desc("discontinuedDate").ignoreCase());
-		else if (sort == 4)
-			criteria.addOrder(Order.asc("cy.name").ignoreCase());
-		else if (sort == -4)
-			criteria.addOrder(Order.desc("cy.name").ignoreCase());
-		
-		criteria.setFirstResult(start);
-		criteria.setMaxResults(size);
+		String column = "";
+		if ((sort == 1) || (sort == -1))
+			column = "name";
+		else if ((sort == 2) || (sort == -2))
+			column = "introducedDate";
+		else if ((sort == 3) || (sort == -3))
+			column = "discontinuedDate";
+		else if ((sort == 4) || (sort == -4))
+			column = "cy.name";
 
-		return criteria.list();
+		return computerRepository.findAll(constructPageSpecification(start, size, d, column));
 	}
 	
 	public int getNumberComputers() {
-		return ((Long) sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class)
-				.setProjection(Projections.rowCount()).uniqueResult())
-				.intValue();
+		return (int) computerRepository.count();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Computer> list(int start, int size, String search) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Computer.class);
-		criteria.setFirstResult(start);
-		criteria.setMaxResults(size);
-		criteria.add(Restrictions.like("name", "%"+search+"%").ignoreCase()); 
-		criteria.addOrder(Order.asc("name"));
-		
-		return criteria.list();
+	public Page<Computer> list(int start, int size, String search) {
+		return computerRepository.findAllByNameLike(search, constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Computer> list(int start, int size, String search, int sort) {
-		Session session = sessionFactory.getCurrentSession();
-		Criteria criteria = session.createCriteria(Computer.class);
-		criteria.createAlias("company", "cy", JoinType.LEFT_OUTER_JOIN);
-		criteria.add(Restrictions.like("name", "%"+search+"%").ignoreCase()); 
+	public Page<Computer> list(int start, int size, String search, int sort) {
+		Direction d = null;
+		if (sort > 0)
+			d = Sort.Direction.ASC;
+		else
+			d = Sort.Direction.DESC;
 		
-		if (sort == 1)
-			criteria.addOrder(Order.asc("name").ignoreCase());
-		else if (sort == -1)
-			criteria.addOrder(Order.desc("name").ignoreCase());
-		else if (sort == 2)
-			criteria.addOrder(Order.asc("introducedDate").ignoreCase());
-		else if (sort == -2)
-			criteria.addOrder(Order.desc("introducedDate").ignoreCase());
-		else if (sort == 3)
-			criteria.addOrder(Order.asc("discontinuedDate").ignoreCase());
-		else if (sort == -3)
-			criteria.addOrder(Order.desc("discontinuedDate").ignoreCase());
-		else if (sort == 4)
-			criteria.addOrder(Order.asc("cy.name").ignoreCase());
-		else if (sort == -4)
-			criteria.addOrder(Order.desc("cy.name").ignoreCase());
-		
-		criteria.setFirstResult(start);
-		criteria.setMaxResults(size);
-		
-		return criteria.list();
+		String column = "";
+		if ((sort == 1) || (sort == -1))
+			column = "name";
+		else if ((sort == 2) || (sort == -2))
+			column = "introducedDate";
+		else if ((sort == 3) || (sort == -3))
+			column = "discontinuedDate";
+		else if ((sort == 4) || (sort == -4))
+			column = "cy.name";
+
+		return computerRepository.findAllByNameLike(search, constructPageSpecification(start, size, d, column));
 	}
 	
 	public int getNumberComputers(String search) {
-		return ((Long) sessionFactory.getCurrentSession()
-				.createCriteria(Computer.class)
-				.add(Restrictions.like("name", "%"+search+"%").ignoreCase())
-				.setProjection(Projections.rowCount()).uniqueResult())
-				.intValue();
+		return (int) computerRepository.count();
 	}
 
 	public void delete(int id) {
 		Computer computer = findById(id);
-		Session session = sessionFactory.getCurrentSession();
-		session.delete(computer);
+		computerRepository.delete(computer);
 	}
 	
 	public void update(Computer oldComputer, String newName, String newIntroducedDate, String newDiscontinuedDate, Company newCompany)  {
@@ -153,7 +108,15 @@ public class ComputerDaoImpl implements ComputerDAO {
 		
 		oldComputer.setCompany(newCompany);
 		
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(oldComputer);
+		computerRepository.save(oldComputer);
 	}
+	
+	private Pageable constructPageSpecification(int start, int size, Direction d, String column) {
+        Pageable pageSpecification = new PageRequest(start, size, getSort(d, column));
+        return pageSpecification;
+    }
+	
+	private Sort getSort(Direction d, String column) {
+        return new Sort(d, column);
+    }
 }

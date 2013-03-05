@@ -1,20 +1,18 @@
 package com.excilys.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.beans.Log;
+import com.excilys.repository.LogRepository;
 
 @Repository("LogDaoImpl")
 public class LogDaoImpl implements LogDAO {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	private LogRepository logRepository;
 	
 	public void create(Log log) {
-		Session session = sessionFactory.getCurrentSession();
-		session.saveOrUpdate(log);
+		logRepository.save(log);
 	}
 }

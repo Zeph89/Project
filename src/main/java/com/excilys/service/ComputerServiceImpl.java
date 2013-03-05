@@ -2,9 +2,9 @@ package com.excilys.service;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,33 +44,23 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly=true)
-	public List<Computer> list(int start, int size) {
+	public Page<Computer> list(int start, int size) {
 		return cp.list(start, size);
 	}
 
 	@Transactional(readOnly=true)
-	public List<Computer> list(int start, int size, int sort) {
+	public Page<Computer> list(int start, int size, int sort) {
 		return cp.list(start, size, sort);
 	}
 
 	@Transactional(readOnly=true)
-	public List<Computer> list(int start, int size, String search) {
+	public Page<Computer> list(int start, int size, String search) {
 		return cp.list(start, size, search);
 	}
 
 	@Transactional(readOnly=true)
-	public List<Computer> list(int start, int size, String search, int sort) {
+	public Page<Computer> list(int start, int size, String search, int sort) {
 		return cp.list(start, size, search, sort);
-	}
-
-	@Transactional(readOnly=true)
-	public int getNumberComputers() {
-		return cp.getNumberComputers();
-	}
-
-	@Transactional(readOnly=true)
-	public int getNumberComputers(String search) {
-		return cp.getNumberComputers(search);
 	}
 
 	@Transactional

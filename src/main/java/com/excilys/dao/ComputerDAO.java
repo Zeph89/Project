@@ -1,6 +1,6 @@
 package com.excilys.dao;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
@@ -11,17 +11,13 @@ public interface ComputerDAO {
 
 	Computer findById(int id);
 
-	List<Computer> list(int start, int size);
+	Page<Computer> list(int start, int size);
 	
-	List<Computer> list(int start, int size, int sort);
+	Page<Computer> list(int start, int size, int sort);
 	
-	List<Computer> list(int start, int size, String search);
+	Page<Computer> list(int start, int size, String search);
 	
-	List<Computer> list(int start, int size, String search, int sort);
-	
-	int getNumberComputers();
-	
-	int getNumberComputers(String search);
+	Page<Computer> list(int start, int size, String search, int sort);
 
 	void delete(int id);
 	

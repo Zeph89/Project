@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,21 +49,25 @@ public class ComputerController {
 			page = 1;
 			
 			if (search == null) {
-				listc = cd.list(page*PAGE_SIZE, PAGE_SIZE, sort);
-				model.addAttribute("nbComputer", cd.getNumberComputers());
+				Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE, sort);
+				listc = p.getContent();
+				model.addAttribute("nbComputer", p.getTotalElements());
 			} else {
-				listc = cd.list(page*PAGE_SIZE, PAGE_SIZE, search, sort);
-				model.addAttribute("nbComputer", cd.getNumberComputers(search));
+				Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE, search, sort);
+				model.addAttribute("nbComputer", p.getTotalElements());
 				model.addAttribute("search", search);
 			}
 
 			model.addAttribute("sort", sort*(-1));
 		} else if (search == null) {
-			listc = cd.list(page*PAGE_SIZE, PAGE_SIZE);
-			model.addAttribute("nbComputer", cd.getNumberComputers());
+			Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE);
+			listc = p.getContent();
+			model.addAttribute("nbComputer", p.getTotalElements());
+			
 		} else {
-			listc = cd.list(page*PAGE_SIZE, PAGE_SIZE, search);
-			model.addAttribute("nbComputer", cd.getNumberComputers(search));
+			Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE, search);
+			listc = p.getContent();
+			model.addAttribute("nbComputer", p.getTotalElements());
 			model.addAttribute("search", search);
 		}
 
