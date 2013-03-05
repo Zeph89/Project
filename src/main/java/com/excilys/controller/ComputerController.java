@@ -1,5 +1,8 @@
 package com.excilys.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.beans.Computer;
+import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
 @Controller
@@ -19,8 +23,11 @@ public class ComputerController {
 	@Autowired
 	private ComputerService cd;
 	
+	@Autowired
+	private CompanyService cy;
+	
 	@RequestMapping(value = "/dashboard")
-    public String get(@RequestParam(value="search", required=false) String search,
+    public String initComputer(@RequestParam(value="search", required=false) String search,
                     @RequestParam(value="page", required=false) Integer page,
                     @RequestParam(value="sort", required=false) Integer sort,
                     @RequestParam(value="nameMess", required=false) String nameMess,
@@ -51,7 +58,6 @@ public class ComputerController {
 
 			model.addAttribute("sort", sort*(-1));
 		} else if (search == null) {
-			System.out.println(cd.toString());
 			listc = cd.list(page*PAGE_SIZE, PAGE_SIZE);
 			model.addAttribute("nbComputer", cd.getNumberComputers());
 		} else {
@@ -72,4 +78,168 @@ public class ComputerController {
 		
 		return "dashboard";
 	}
+	
+	@RequestMapping(value = "/infoComputer")
+    public String infoComputer(@RequestParam(value="id", required=true) Integer id,
+                    Model model) {
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Computer c = cd.findById(id);
+		model.addAttribute("id", c.getId());
+		model.addAttribute("name", c.getName());
+		
+		if (c.getIntroducedDate() != null)
+			model.addAttribute("introducedDate", dateFormat.format(c.getIntroducedDate()));
+		else
+			model.addAttribute("introducedDate", "");
+		
+		if (c.getDiscontinuedDate() != null)
+			model.addAttribute("discontinuedDate", dateFormat.format(c.getDiscontinuedDate()));
+		else
+			model.addAttribute("discontinuedDate", "");
+		
+		model.addAttribute("companyId", c.getCompany().getId());
+		model.addAttribute("companies", cy.list());
+		
+		return "updateComputer";
+	}
+	
+	@RequestMapping(value = "/deleteComputer")
+    public String deleteComputer(@RequestParam(value="id", required=true) Integer id,
+                    Model model) {
+		
+		model.addAttribute("message", 3);
+		model.addAttribute("nameMess", cd.findById(id).getName());
+		
+		cd.delete(id);
+
+		return "redirect:dashboard.html";
+	}
+	
+	@RequestMapping(value = "/updateComputer")
+    public String updateComputer(@RequestParam(value="id", required=true) Integer id,
+                    @RequestParam(value="name", required=false) String name,
+                    @RequestParam(value="introduced", required=false) String introducedDate,
+                    @RequestParam(value="discontinued", required=false) String discontinuedDate,
+                    @RequestParam(value="company", required=false) Integer companyId,
+                    Model model) {
+		
+		Computer c = cd.findById(id);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		boolean error = false;
+		
+		if (introducedDate.equals("") == false) {
+			try {
+				dateFormat.parse(introducedDate);
+				model.addAttribute("introducedE", 0);
+			} catch (ParseException e) {
+				model.addAttribute("introducedE", 1);
+				error = true;
+			}
+		}
+		
+		if (discontinuedDate.equals("") == false) {
+			try {
+				dateFormat.parse(discontinuedDate);	
+				model.addAttribute("discontinuedE", 0);
+			} catch (ParseException e) {
+				model.addAttribute("discontinuedE", 1);
+				error = true;
+			}
+		}
+		
+		if (!error) {
+			if (companyId == null)
+				companyId = -1;
+			
+			cd.update(c, name, introducedDate, discontinuedDate, companyId);
+			
+			model.addAttribute("message", 2);
+			model.addAttribute("nameMess", c.getName());
+	
+			return "redirect:dashboard.html";
+		} else {
+			model.addAttribute("id", c.getId());
+			model.addAttribute("name", name);
+			model.addAttribute("introducedDate", introducedDate);
+			model.addAttribute("discontinuedDate", discontinuedDate);
+			model.addAttribute("companyId", c.getCompany().getId());
+			
+			model.addAttribute("companies", cy.list());
+			return "updateComputer";
+		}
+	}
+	
+	@RequestMapping(value = "/insertComputer")
+    public String insertComputer(@RequestParam(value="name", required=false) String name,
+                    @RequestParam(value="introduced", required=false) String introducedDate,
+                    @RequestParam(value="discontinued", required=false) String discontinuedDate,
+                    @RequestParam(value="company", required=false) Integer companyId,
+                    Model model) {
+		
+		if (introducedDate == null) {
+			model.addAttribute("companies", cy.list());
+			return "insertComputer";
+		} else {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			boolean error = false;
+			
+			Date introduced = null;
+			Date discontinued = null;
+			if (introducedDate.equals("") == false) {
+				try {
+					introduced = dateFormat.parse(introducedDate);
+					model.addAttribute("introducedE", 0);
+				} catch (ParseException e) {
+					model.addAttribute("introducedE", 1);
+					error = true;
+				}
+			}
+			
+			if (discontinuedDate.equals("") == false) {
+				try {
+					discontinued = dateFormat.parse(discontinuedDate);	
+					model.addAttribute("discontinuedE", 0);
+				} catch (ParseException e) {
+					model.addAttribute("discontinuedE", 1);
+					error = true;
+				}
+			}
+			
+			if (companyId == null)
+				companyId = -1;
+			
+			if (!error) {
+				System.out.println("OK");
+				Computer c = new Computer();
+				c.setName(name);
+				c.setIntroducedDate(introduced);
+				c.setDiscontinuedDate(discontinued);
+				
+				if (companyId != 0)
+					c.setCompany(cy.findById(companyId));
+				else
+					c.setCompany(null);
+			
+				cd.create(c);
+				
+				model.addAttribute("message", 1);
+				model.addAttribute("nameMess", c.getName());
+	
+				return "redirect:dashboard.html";
+			} else {
+				System.out.println("PAS OK");
+				model.addAttribute("name", name);
+				model.addAttribute("introducedDate", introducedDate);
+				model.addAttribute("discontinuedDate", discontinuedDate);
+				model.addAttribute("companyId", companyId);
+				
+				model.addAttribute("companies", cy.list());
+				return "insertComputer";
+			}
+		}
+	}
+
 }

@@ -6,11 +6,7 @@ import com.excilys.beans.Company;
 
 public interface CompanyDAO {
 	
-	void create(Company company) throws DAOException;
+	Company findById(int id);
 
-	Company findById(int id) throws DAOException;
-
-	List<Company> list() throws DAOException;
-
-	void delete(int id) throws DAOException;
+	List<Company> list();
 }

@@ -13,7 +13,7 @@
 
 	<section id="main">
 		<h1>Add a computer</h1>
-			<form action="/projectComputerWebapp/InsertComputerServlet" method="POST">
+			<form action="/projectComputer/insertComputer.html" method="POST">
 				<%@ include file="infoComputer.jsp" %>
 			</form>
 	</section>
