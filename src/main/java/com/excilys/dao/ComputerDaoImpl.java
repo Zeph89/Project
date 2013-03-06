@@ -57,7 +57,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 	}
 	
 	public Page<Computer> list(int start, int size, String search) {
-		return computerRepository.findAllByNameLike(search, constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
+		return computerRepository.findAllByNameLikeIgnoreCase("%"+search+"%", constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
 	}
 	
 	public Page<Computer> list(int start, int size, String search, int sort) {
@@ -77,7 +77,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		else if ((sort == 4) || (sort == -4))
 			column = "company.name";
 
-		return computerRepository.findAllByNameLike(search, constructPageSpecification(start, size, d, column));
+		return computerRepository.findAllByNameLikeIgnoreCase("%"+search+"%", constructPageSpecification(start, size, d, column));
 	}
 	
 	public int getNumberComputers(String search) {
