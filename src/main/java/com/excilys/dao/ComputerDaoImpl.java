@@ -47,7 +47,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		else if ((sort == 3) || (sort == -3))
 			column = "discontinuedDate";
 		else if ((sort == 4) || (sort == -4))
-			column = "cy.name";
+			column = "company.name";
 
 		return computerRepository.findAll(constructPageSpecification(start, size, d, column));
 	}
@@ -75,7 +75,7 @@ public class ComputerDaoImpl implements ComputerDAO {
 		else if ((sort == 3) || (sort == -3))
 			column = "discontinuedDate";
 		else if ((sort == 4) || (sort == -4))
-			column = "cy.name";
+			column = "company.name";
 
 		return computerRepository.findAllByNameLike(search, constructPageSpecification(start, size, d, column));
 	}
