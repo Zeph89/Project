@@ -8,12 +8,12 @@ import com.excilys.beans.Log;
 import com.excilys.dao.LogDAO;
 
 @Service
+@Transactional
 public class LogServiceImpl implements LogService {
 
 	@Autowired
 	private LogDAO lg;
 	
-	@Transactional
 	public void create(Log log) {
 		lg.create(log);
 	}

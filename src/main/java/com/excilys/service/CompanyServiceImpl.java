@@ -10,17 +10,16 @@ import com.excilys.beans.Company;
 import com.excilys.dao.CompanyDAO;
 
 @Service
+@Transactional(readOnly=true)
 public class CompanyServiceImpl implements CompanyService {
 	
 	@Autowired
 	private CompanyDAO cy;
 	
-	@Transactional(readOnly=true)
 	public Company findById(int id) {
 		return cy.findById(id);
 	}
 
-	@Transactional(readOnly=true)
 	public List<Company> list() {
 		return cy.list();
 	}

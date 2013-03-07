@@ -15,6 +15,7 @@ import com.excilys.dao.ComputerDAO;
 import com.excilys.dao.LogDAO;
 
 @Service
+@Transactional(readOnly=true)
 public class ComputerServiceImpl implements ComputerService {
 
 	@Autowired
@@ -23,7 +24,7 @@ public class ComputerServiceImpl implements ComputerService {
 	@Autowired
 	private LogDAO lg;
 	
-	@Transactional
+	@Transactional(readOnly=false)
 	public void create(Computer computer) {
 		cp.create(computer);
 
@@ -38,32 +39,28 @@ public class ComputerServiceImpl implements ComputerService {
 		lg.create(log);
 	}
 
-	@Transactional(readOnly=true)
+	
 	public Computer findById(int id) {
 		return cp.findById(id);
 	}
 
-	@Transactional(readOnly=true)
 	public Page<Computer> list(int start, int size) {
 		return cp.list(start, size);
 	}
 
-	@Transactional(readOnly=true)
 	public Page<Computer> list(int start, int size, int sort) {
 		return cp.list(start, size, sort);
 	}
 
-	@Transactional(readOnly=true)
 	public Page<Computer> list(int start, int size, String search) {
 		return cp.list(start, size, search);
 	}
 
-	@Transactional(readOnly=true)
 	public Page<Computer> list(int start, int size, String search, int sort) {
 		return cp.list(start, size, search, sort);
 	}
 
-	@Transactional
+	@Transactional(readOnly=false)
 	public void delete(int id) {
 		Computer c = cp.findById(id);
 		cp.delete(id);
@@ -79,7 +76,7 @@ public class ComputerServiceImpl implements ComputerService {
 		lg.create(log);
 	}
 
-	@Transactional
+	@Transactional(readOnly=false)
 	public void update(Computer oldComputer, String newName,
 			String newIntroducedDate, String newDiscontinuedDate,
 			Company newCompany) {
