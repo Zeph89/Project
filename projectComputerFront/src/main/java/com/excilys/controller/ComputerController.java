@@ -34,15 +34,15 @@ public class ComputerController {
                     @RequestParam(value="nameMess", required=false) String nameMess,
                     @RequestParam(value="message", required=false) Integer message,
                     Model model) {
-		
+
 		if(page == null || page.equals("")) {
 			model.addAttribute("page", 0);
 			page = 0;
 		} else {
 			model.addAttribute("page", page);
 		}
-		
-		List<Computer> listc = null;
+
+        List<Computer> listc = null;
 		
 		if (sort != null) {
 			model.addAttribute("page", 0);

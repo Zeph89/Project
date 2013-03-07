@@ -1,32 +1,35 @@
 package com.excilys.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.excilys.repository.ComputerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
-import com.excilys.dao.ComputerDAO;
-import com.excilys.dao.LogDAO;
 
 @Service
 @Transactional(readOnly=true)
 public class ComputerServiceImpl implements ComputerService {
 
-	@Autowired
-	private ComputerDAO cp;
+    @Autowired
+    private ComputerRepository computerRepository;
 	
 	@Autowired
-	private LogDAO lg;
+	private LogService lg;
 	
 	@Transactional(readOnly=false)
 	public void create(Computer computer) {
-		cp.create(computer);
+        computerRepository.save(computer);
 
 		Date now = Calendar.getInstance().getTime();
 
@@ -41,29 +44,69 @@ public class ComputerServiceImpl implements ComputerService {
 
 	
 	public Computer findById(int id) {
-		return cp.findById(id);
+        return computerRepository.findOne(id);
 	}
 
 	public Page<Computer> list(int start, int size) {
-		return cp.list(start, size);
+        return computerRepository.findAll(constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
 	}
 
 	public Page<Computer> list(int start, int size, int sort) {
-		return cp.list(start, size, sort);
+		Sort.Direction d = null;
+        if (sort > 0)
+            d = Sort.Direction.ASC;
+        else
+            d = Sort.Direction.DESC;
+
+        String column = "";
+        if ((sort == 1) || (sort == -1))
+            column = "name";
+        else if ((sort == 2) || (sort == -2))
+            column = "introducedDate";
+        else if ((sort == 3) || (sort == -3))
+            column = "discontinuedDate";
+        else if ((sort == 4) || (sort == -4))
+            column = "company.name";
+
+        return computerRepository.findAll(constructPageSpecification(start, size, d, column));
 	}
 
+    public int getNumberComputers() {
+        return (int) computerRepository.count();
+    }
+
 	public Page<Computer> list(int start, int size, String search) {
-		return cp.list(start, size, search);
+        return computerRepository.findAllByNameLikeIgnoreCase("%" + search + "%", constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
 	}
 
 	public Page<Computer> list(int start, int size, String search, int sort) {
-		return cp.list(start, size, search, sort);
-	}
+		Sort.Direction d = null;
+        if (sort > 0)
+            d = Sort.Direction.ASC;
+        else
+            d = Sort.Direction.DESC;
+
+        String column = "";
+        if ((sort == 1) || (sort == -1))
+            column = "name";
+        else if ((sort == 2) || (sort == -2))
+            column = "introducedDate";
+        else if ((sort == 3) || (sort == -3))
+            column = "discontinuedDate";
+        else if ((sort == 4) || (sort == -4))
+            column = "company.name";
+
+        return computerRepository.findAllByNameLikeIgnoreCase("%"+search+"%", constructPageSpecification(start, size, d, column));
+    }
+
+    public int getNumberComputers(String search) {
+        return (int) computerRepository.count();
+    }
 
 	@Transactional(readOnly=false)
 	public void delete(int id) {
-		Computer c = cp.findById(id);
-		cp.delete(id);
+		Computer c = findById(id);
+        computerRepository.delete(c);
 
 		Date now = Calendar.getInstance().getTime();
 
@@ -80,8 +123,26 @@ public class ComputerServiceImpl implements ComputerService {
 	public void update(Computer oldComputer, String newName,
 			String newIntroducedDate, String newDiscontinuedDate,
 			Company newCompany) {
-		cp.update(oldComputer, newName, newIntroducedDate, newDiscontinuedDate,
-				newCompany);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        oldComputer.setName(newName);
+
+        try {
+            if (newIntroducedDate.equals(""))
+                oldComputer.setIntroducedDate(null);
+            else
+                oldComputer.setIntroducedDate(dateFormat.parse(newIntroducedDate));
+
+            if (newDiscontinuedDate.equals(""))
+                oldComputer.setDiscontinuedDate(null);
+            else
+                oldComputer.setDiscontinuedDate(dateFormat.parse(newDiscontinuedDate));
+        } catch(Exception e) {}
+
+        oldComputer.setCompany(newCompany);
+
+        computerRepository.save(oldComputer);
+
 
 		Date now = Calendar.getInstance().getTime();
 
@@ -93,4 +154,13 @@ public class ComputerServiceImpl implements ComputerService {
 		
 		lg.create(log);
 	}
+
+    private Pageable constructPageSpecification(int start, int size, Sort.Direction d, String column) {
+        Pageable pageSpecification = new PageRequest(start, size, getSort(d, column));
+        return pageSpecification;
+    }
+
+    private Sort getSort(Sort.Direction d, String column) {
+        return new Sort(d, column);
+    }
 }
