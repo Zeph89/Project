@@ -15,7 +15,6 @@
 
 	<context:annotation-config />
 
-	<context:component-scan base-package="com.excilys.dao" />
 	<context:component-scan base-package="com.excilys.service" />
 
 	<bean id="computerDataSource" class="com.jolbox.bonecp.BoneCPDataSource">
@@ -40,7 +39,7 @@
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>

@@ -16,9 +16,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <dependencies>
-		<dependency>
-			<groupId>projectComputerBack</groupId>
-			<artifactId>projectComputerBack</artifactId>
-		</dependency>
+      <dependency>
+          <groupId>projectComputerBack</groupId>
+          <artifactId>projectComputerBack</artifactId>
+      </dependency>
 	</dependencies>
 </project>

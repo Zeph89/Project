@@ -1,5 +1,7 @@
 package com.excilys.beans;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table (name= "computer")
@@ -23,6 +26,8 @@ public class Computer {
 	private int id;
 	
 	@Column(name = "name")
+    @NotNull
+    @NotBlank
 	private String name;
 	
 	@Temporal(TemporalType.DATE)

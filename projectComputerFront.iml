@@ -9,9 +9,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/projectComputerFront/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/projectComputerFront/src/main/java" />
-        </sourceRoots>
       </configuration>
     </facet>
   </component>
@@ -60,6 +57,8 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:1.5.0.RELEASE" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:jcl-over-slf4j:1.7.1" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.7.1" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:4.2.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
   </component>
 </module>
 

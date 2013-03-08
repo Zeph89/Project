@@ -22,6 +22,7 @@
 		<hibernate.version>4.1.9.Final</hibernate.version>
 		<springjpa.version>1.3.0.RELEASE</springjpa.version>
 		<springsecurity.version>3.1.3.RELEASE</springsecurity.version>
+        <validation.version>4.2.0.Final</validation.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -145,6 +146,12 @@
 				<artifactId>projectComputerBack</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${validation.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 	<modules>
