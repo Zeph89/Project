@@ -11,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.beans.Computer;
@@ -117,7 +115,6 @@ public class ComputerController {
 			model.addAttribute("companyId", c.getCompany().getId());
 		model.addAttribute("companies", cy.list());
 
-        System.out.println("sdsdsd");
 		return "updateComputer";
 	}
 	
@@ -171,63 +168,6 @@ public class ComputerController {
             return "redirect:dashboard.html";
         }
     }
-	/*@RequestMapping(value = "/updateComputer")
-    public String updateComputer(@RequestParam(value="id", required=true) Integer id,
-                    @RequestParam(value="name", required=false) String name,
-                    @RequestParam(value="introduced", required=false) String introducedDate,
-                    @RequestParam(value="discontinued", required=false) String discontinuedDate,
-                    @RequestParam(value="company", required=false) Integer companyId,
-                    Model model) {
-		
-		Computer c = cd.findById(id);
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		boolean error = false;
-		
-		if (introducedDate.equals("") == false) {
-			try {
-				dateFormat.parse(introducedDate);
-				model.addAttribute("introducedE", 0);
-			} catch (ParseException e) {
-				model.addAttribute("introducedE", 1);
-				error = true;
-			}
-		}
-		
-		if (discontinuedDate.equals("") == false) {
-			try {
-				dateFormat.parse(discontinuedDate);	
-				model.addAttribute("discontinuedE", 0);
-			} catch (ParseException e) {
-				model.addAttribute("discontinuedE", 1);
-				error = true;
-			}
-		}
-		
-		if (!error) {
-			if (companyId == null)
-				cd.update(c, name, introducedDate, discontinuedDate, null);
-			else
-				cd.update(c, name, introducedDate, discontinuedDate, cy.findById(companyId));
-	
-			model.addAttribute("message", 2);
-			model.addAttribute("nameMess", c.getName());
-	
-			return "redirect:dashboard.html";
-		} else {
-			model.addAttribute("id", c.getId());
-			model.addAttribute("name", name);
-			model.addAttribute("introducedDate", introducedDate);
-			model.addAttribute("discontinuedDate", discontinuedDate);
-			
-			if (c.getCompany() == null)
-				model.addAttribute("companyId", -1);
-			else
-				model.addAttribute("companyId", c.getCompany().getId());
-			model.addAttribute("companies", cy.list());
-			return "updateComputer";
-		}
-	}*/
 
     @RequestMapping(value = "/insertComputer")
     public String insertComputer(@Valid @ModelAttribute ComputerForm computerForm,
