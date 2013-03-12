@@ -1,9 +1,11 @@
 package com.excilys.beans;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
+import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -29,14 +29,16 @@ public class Computer {
     @NotNull
     @NotBlank
 	private String name;
-	
-	@Temporal(TemporalType.DATE)
+
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "introduced_date")
-	private Date introducedDate;
-	
-	@Temporal(TemporalType.DATE)
+	private DateTime introducedDate;
+
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "discontinued_date")
-	private Date discontinuedDate;
+	private DateTime discontinuedDate;
 	
 	@ManyToOne
     @JoinColumn(name="company_id")
@@ -44,8 +46,8 @@ public class Computer {
 	
 	public Computer() {}
 	
-	public Computer(int id, String name, Date introducedDate,
-			Date discontinuedDate, Company company) {
+	public Computer(int id, String name, DateTime introducedDate,
+                    DateTime discontinuedDate, Company company) {
 		this.id = id;
 		this.name = name;
 		this.introducedDate = introducedDate;
@@ -69,29 +71,19 @@ public class Computer {
 		this.name = name;
 	}
 
-	public Date getIntroducedDate() {
+	public DateTime getIntroducedDate() {
 		return introducedDate;
 	}
-	
-	public String getIntroducedDateFormat() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-		return dateFormat.format(introducedDate);
-	}
 
-	public void setIntroducedDate(Date introducedDate) {
+	public void setIntroducedDate(DateTime introducedDate) {
 		this.introducedDate = introducedDate;
 	}
 
-	public Date getDiscontinuedDate() {
+	public DateTime getDiscontinuedDate() {
 		return discontinuedDate;
 	}
-	
-	public String getDiscontinuedDateFormat() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
-		return dateFormat.format(discontinuedDate);
-	}
 
-	public void setDiscontinuedDate(Date discontinuedDate) {
+	public void setDiscontinuedDate(DateTime discontinuedDate) {
 		this.discontinuedDate = discontinuedDate;
 	}
 

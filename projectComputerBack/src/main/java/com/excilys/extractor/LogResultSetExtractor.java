@@ -3,6 +3,7 @@ package com.excilys.extractor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.joda.time.DateTime;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.excilys.beans.Log;
@@ -15,7 +16,7 @@ public class LogResultSetExtractor implements ResultSetExtractor<Log> {
 		log.setDescription(rs.getString("description"));
 		log.setComputerId(rs.getInt("computer_id"));
 		log.setComputerName(rs.getString("computer_name"));
-		log.setDate(rs.getDate("log_date"));
+		log.setDate(new DateTime(rs.getDate("log_date")));
 		
 		return log;
 	}

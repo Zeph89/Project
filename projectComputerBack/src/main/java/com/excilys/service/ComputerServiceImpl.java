@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.excilys.repository.ComputerRepository;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,7 +34,7 @@ public class ComputerServiceImpl implements ComputerService {
 	public void create(Computer computer) {
         computerRepository.save(computer);
 
-		Date now = Calendar.getInstance().getTime();
+        DateTime now = DateTime.now();
 
 		Log log = new Log();
 		log.setDescription("Insert computer");
@@ -108,7 +111,7 @@ public class ComputerServiceImpl implements ComputerService {
 		Computer c = findById(id);
         computerRepository.delete(c);
 
-		Date now = Calendar.getInstance().getTime();
+        DateTime now = DateTime.now();
 
 		Log log = new Log();
 		log.setDescription("Delete computer");
@@ -123,7 +126,7 @@ public class ComputerServiceImpl implements ComputerService {
 	public void update(Computer oldComputer, String newName,
 			String newIntroducedDate, String newDiscontinuedDate,
 			Company newCompany) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 
         oldComputer.setName(newName);
 
@@ -131,12 +134,12 @@ public class ComputerServiceImpl implements ComputerService {
             if (newIntroducedDate.equals(""))
                 oldComputer.setIntroducedDate(null);
             else
-                oldComputer.setIntroducedDate(dateFormat.parse(newIntroducedDate));
+                oldComputer.setIntroducedDate(dateFormat.parseDateTime(newIntroducedDate));
 
             if (newDiscontinuedDate.equals(""))
                 oldComputer.setDiscontinuedDate(null);
             else
-                oldComputer.setDiscontinuedDate(dateFormat.parse(newDiscontinuedDate));
+                oldComputer.setDiscontinuedDate(dateFormat.parseDateTime(newDiscontinuedDate));
         } catch(Exception e) {}
 
         oldComputer.setCompany(newCompany);
@@ -144,7 +147,7 @@ public class ComputerServiceImpl implements ComputerService {
         computerRepository.save(oldComputer);
 
 
-		Date now = Calendar.getInstance().getTime();
+        DateTime now = DateTime.now();
 
 		Log log = new Log();
 		log.setDescription("Update computer");

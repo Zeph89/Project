@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.excilys.form.ComputerForm;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -86,26 +89,26 @@ public class ComputerController {
 		
 		model.addAttribute("PAGE_SIZE", PAGE_SIZE);
 		
-		return "dashboard";
+		return "/WEB-INF/jsp/dashboard";
 	}
 	
 	@RequestMapping(value = "/infoComputer")
     public String infoComputer(@RequestParam(value="id", required=true) Integer id,
                     Model model) {
 		model.addAttribute(new ComputerForm());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
 		
 		Computer c = cd.findById(id);
 		model.addAttribute("id", c.getId());
 		model.addAttribute("name", c.getName());
 		
 		if (c.getIntroducedDate() != null)
-			model.addAttribute("introducedDate", dateFormat.format(c.getIntroducedDate()));
+			model.addAttribute("introducedDate", c.getIntroducedDate());
 		else
 			model.addAttribute("introducedDate", "");
 		
 		if (c.getDiscontinuedDate() != null)
-			model.addAttribute("discontinuedDate", dateFormat.format(c.getDiscontinuedDate()));
+			model.addAttribute("discontinuedDate", c.getDiscontinuedDate());
 		else
 			model.addAttribute("discontinuedDate", "");
 		
@@ -115,7 +118,7 @@ public class ComputerController {
 			model.addAttribute("companyId", c.getCompany().getId());
 		model.addAttribute("companies", cy.list());
 
-		return "updateComputer";
+		return "/WEB-INF/jsp/updateComputer";
 	}
 	
 	@RequestMapping(value = "/deleteComputer")
@@ -153,7 +156,7 @@ public class ComputerController {
 
             model.addAttribute("companies", cy.list());
 
-            return "updateComputer";
+            return "/WEB-INF/jsp/updateComputer";
         } else {
             Computer c = cd.findById(id);
             if (computerForm.getCompany() == null)
@@ -191,26 +194,26 @@ public class ComputerController {
                 model.addAttribute("companyId", computerForm.getCompany());
 
                 model.addAttribute("companies", cy.list());
-                return "insertComputer";
+                return "/WEB-INF/jsp/insertComputer";
             } else if (computerForm.getName() != null) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                DateTimeFormatter dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
                 Computer c = new Computer();
 
                 model.addAttribute("discontinuedE", 0);
                 c.setName(computerForm.getName());
 
-                Date introduced = null;
+                DateTime introduced = null;
                 try {
-                    introduced = dateFormat.parse(computerForm.getIntroduced());
+                    introduced = dateFormat.parseDateTime(computerForm.getIntroduced());
                     model.addAttribute("introducedE", 0);
-                } catch (ParseException e) {}
+                } catch (Exception e) {}
                 c.setIntroducedDate(introduced);
 
-                Date discontinued = null;
+                DateTime discontinued = null;
                 try {
-                    discontinued = dateFormat.parse(computerForm.getIntroduced());
+                    discontinued = dateFormat.parseDateTime(computerForm.getDiscontinued());
                     model.addAttribute("discontinuedE", 0);
-                } catch (ParseException e) {}
+                } catch (Exception e) {}
                 c.setDiscontinuedDate(discontinued);
 
                 if (computerForm.getCompany() != null)
@@ -232,7 +235,7 @@ public class ComputerController {
         model.addAttribute("discontinuedE", 0);
 
         model.addAttribute("companies", cy.list());
-        return "insertComputer";
+        return "/WEB-INF/jsp/insertComputer";
 	}
 
 }

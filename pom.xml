@@ -23,6 +23,8 @@
 		<springjpa.version>1.3.0.RELEASE</springjpa.version>
 		<springsecurity.version>3.1.3.RELEASE</springsecurity.version>
         <validation.version>4.2.0.Final</validation.version>
+        <joda.version>2.1</joda.version>
+        <jadiratype>3.0.0.CR1</jadiratype>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -60,7 +62,6 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${servlet.version}</version>
-				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
@@ -151,6 +152,18 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
                 <version>${validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jadira.usertype</groupId>
+                <artifactId>usertype.core</artifactId>
+                <version>${jadiratype}</version>
             </dependency>
 		</dependencies>
 	</dependencyManagement>

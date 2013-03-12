@@ -3,6 +3,7 @@ package com.excilys.extractor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.joda.time.DateTime;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import com.excilys.beans.Company;
@@ -18,8 +19,8 @@ public class ComputerResultSetExtractor implements ResultSetExtractor<Computer> 
 		Computer computer = new Computer();
 		computer.setId(rs.getInt("id"));
 		computer.setName(rs.getString("name"));
-		computer.setIntroducedDate(rs.getDate("introduced_date"));
-		computer.setDiscontinuedDate(rs.getDate("discontinued_date"));
+		computer.setIntroducedDate(new DateTime(rs.getDate("introduced_date")));
+		computer.setDiscontinuedDate(new DateTime(rs.getDate("discontinued_date")));
 		computer.setCompany(company);
 
 		return computer;

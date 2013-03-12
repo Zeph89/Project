@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="pag" tagdir="/WEB-INF/tags" %>
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html>
@@ -119,13 +120,17 @@
 						<td><a
 							href="/projectComputer/infoComputer.html?id=${computer.id}">${computer.name}</a></td>
 						<td><c:choose>
-								<c:when test="${computer.introducedDate != null}"> ${computer.introducedDateFormat} </c:when>
+								<c:when test="${computer.introducedDate != null}">
+                                    ${computer.introducedDate}
+                                </c:when>
 								<c:otherwise>
 									<em>-</em>
 								</c:otherwise>
 							</c:choose></td>
 						<td><c:choose>
-								<c:when test="${computer.discontinuedDate != null}"> ${computer.discontinuedDateFormat} </c:when>
+								<c:when test="${computer.discontinuedDate != null}">
+                                    ${computer.discontinuedDate}
+                                </c:when>
 								<c:otherwise>
 									<em>-</em>
 								</c:otherwise>

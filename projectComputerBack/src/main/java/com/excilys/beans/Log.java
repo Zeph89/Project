@@ -1,5 +1,8 @@
 package com.excilys.beans;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -27,15 +30,15 @@ public class Log {
 	
 	@Column(name = "computer_name")
 	private String computerName;
-	
-	@Temporal(TemporalType.DATE)
+
+    @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "log_date")
-	private Date date;
+	private DateTime date;
 	
 	public Log() {}
 
 	public Log(int id, String description, int computerId, String computerName,
-			Date date) {
+               DateTime date) {
 		this.id = id;
 		this.description = description;
 		this.computerId = computerId;
@@ -75,11 +78,11 @@ public class Log {
 		this.computerName = computerName;
 	}
 
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(DateTime date) {
 		this.date = date;
 	}
 
