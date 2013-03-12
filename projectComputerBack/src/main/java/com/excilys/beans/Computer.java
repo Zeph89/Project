@@ -3,10 +3,6 @@ package com.excilys.beans;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.text.SimpleDateFormat;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
