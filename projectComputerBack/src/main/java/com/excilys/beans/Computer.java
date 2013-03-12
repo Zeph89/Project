@@ -30,12 +30,10 @@ public class Computer {
     @NotBlank
 	private String name;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "introduced_date")
 	private DateTime introducedDate;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "discontinued_date")
 	private DateTime discontinuedDate;

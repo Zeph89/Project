@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %>
 <%@ taglib prefix="pag" tagdir="/WEB-INF/tags" %>
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html>
@@ -121,7 +121,7 @@
 							href="/projectComputer/infoComputer.html?id=${computer.id}">${computer.name}</a></td>
 						<td><c:choose>
 								<c:when test="${computer.introducedDate != null}">
-                                    ${computer.introducedDate}
+                                    <joda:format value="${computer.introducedDate}" style="M-" />
                                 </c:when>
 								<c:otherwise>
 									<em>-</em>
@@ -129,7 +129,7 @@
 							</c:choose></td>
 						<td><c:choose>
 								<c:when test="${computer.discontinuedDate != null}">
-                                    ${computer.discontinuedDate}
+                                    <joda:format value="${computer.discontinuedDate}" style="M-" />
                                 </c:when>
 								<c:otherwise>
 									<em>-</em>

@@ -101,16 +101,16 @@ public class ComputerController {
 		Computer c = cd.findById(id);
 		model.addAttribute("id", c.getId());
 		model.addAttribute("name", c.getName());
-		
+
 		if (c.getIntroducedDate() != null)
-			model.addAttribute("introducedDate", c.getIntroducedDate());
+			model.addAttribute("introduced", c.getIntroducedDate().toString(dateFormat));
 		else
-			model.addAttribute("introducedDate", "");
+			model.addAttribute("introduced", "");
 		
 		if (c.getDiscontinuedDate() != null)
-			model.addAttribute("discontinuedDate", c.getDiscontinuedDate());
+			model.addAttribute("discontinued", c.getDiscontinuedDate().toString(dateFormat));
 		else
-			model.addAttribute("discontinuedDate", "");
+			model.addAttribute("discontinued", "");
 		
 		if (c.getCompany() == null)
 			model.addAttribute("companyId", -1);
