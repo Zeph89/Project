@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
+import org.springframework.util.Assert;
 
 @Service
 @Transactional(readOnly=true)
@@ -32,6 +33,9 @@ public class ComputerServiceImpl implements ComputerService {
 	
 	@Transactional(readOnly=false)
 	public void create(Computer computer) {
+        Assert.notNull(computer);
+        Assert.hasText(computer.getName());
+
         computerRepository.save(computer);
 
         DateTime now = DateTime.now();
@@ -126,8 +130,10 @@ public class ComputerServiceImpl implements ComputerService {
 	public void update(Computer oldComputer, String newName,
 			String newIntroducedDate, String newDiscontinuedDate,
 			Company newCompany) {
-        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
+        Assert.notNull(oldComputer);
+        Assert.hasText(newName);
 
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
         oldComputer.setName(newName);
 
         try {

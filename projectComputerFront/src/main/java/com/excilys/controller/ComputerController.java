@@ -1,8 +1,7 @@
 package com.excilys.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import com.excilys.form.ComputerForm;
@@ -26,7 +25,8 @@ import javax.validation.Valid;
 
 @Controller
 public class ComputerController {
-	
+
+    static final Logger LOG = LoggerFactory.getLogger(ComputerController.class);
 	public final int PAGE_SIZE = 10;
 	
 	@Autowired
@@ -42,6 +42,9 @@ public class ComputerController {
                     @RequestParam(value="nameMess", required=false) String nameMess,
                     @RequestParam(value="message", required=false) Integer message,
                     Model model) {
+
+        LOG.info("Hello World!");
+        LOG.info("How are you today?");
 
 		if(page == null || page.equals("")) {
 			model.addAttribute("page", 0);
