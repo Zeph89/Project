@@ -22,6 +22,5 @@
 			<input type="submit" value="Delete this computer" class="btn danger">
 		</form>
 	</section>
-
 </body>
 </html>
