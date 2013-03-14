@@ -37,7 +37,8 @@ public class ComputerController {
 	private CompanyService cy;
 	
 	@RequestMapping(value = "/dashboard")
-    public String initComputer(@RequestParam(value="search", required=false) String search,
+    public String initComputer(@RequestParam(value="searchComputer", required=false) String searchComputer,
+                    @RequestParam(value="searchCompany", required=false) String searchCompany,
                     @RequestParam(value="page", required=false) Integer page,
                     @RequestParam(value="sort", required=false) Integer sort,
                     @RequestParam(value="nameMess", required=false) String nameMess,
@@ -57,30 +58,35 @@ public class ComputerController {
         List<Computer> listc = null;
 		
 		if (sort != null) {
-			model.addAttribute("page", 0);
-			page = 1;
+            System.out.println("------------------------------------------------------");
+            System.out.println("page = " + page);
+            System.out.println("sort = " + sort);
+            System.out.println("------------------------------------------------------");
 			
-			if (search == null) {
-				Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE, sort);
+			if ((searchComputer == null) && (searchCompany == null)) {
+				Page<Computer> p = cd.list(page, PAGE_SIZE, sort);
 				listc = p.getContent();
-				model.addAttribute("nbComputer", p.getTotalElements());
+				model.addAttribute("nbComputers", p.getTotalElements());
 			} else {
-				Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE, search, sort);
-				model.addAttribute("nbComputer", p.getTotalElements());
-				model.addAttribute("search", search);
+				Page<Computer> p = cd.list(page, PAGE_SIZE, searchComputer, searchCompany,  sort);
+                listc = p.getContent();
+				model.addAttribute("nbComputers", p.getTotalElements());
+				model.addAttribute("searchComputer", searchComputer);
+                model.addAttribute("searchCompany", searchCompany);
 			}
 
-			model.addAttribute("sort", sort*(-1));
-		} else if (search == null) {
-			Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE);
+			model.addAttribute("sort", sort);
+		} else if ((searchComputer == null) && (searchCompany == null)) {
+			Page<Computer> p = cd.list(page, PAGE_SIZE);
 			listc = p.getContent();
-			model.addAttribute("nbComputer", p.getTotalElements());
+			model.addAttribute("nbComputers", p.getTotalElements());
 			
 		} else {
-			Page<Computer> p = cd.list(page*PAGE_SIZE, PAGE_SIZE, search);
+			Page<Computer> p = cd.list(page, PAGE_SIZE, searchComputer, searchCompany);
 			listc = p.getContent();
-			model.addAttribute("nbComputer", p.getTotalElements());
-			model.addAttribute("search", search);
+			model.addAttribute("nbComputers", p.getTotalElements());
+			model.addAttribute("searchComputer", searchComputer);
+            model.addAttribute("searchCompany", searchCompany);
 		}
 
 		model.addAttribute("computers", listc);

@@ -59,16 +59,14 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	public Page<Computer> list(int start, int size, int sort) {
-		Sort.Direction d = null;
+		Sort.Direction d;
         if (sort > 0)
             d = Sort.Direction.ASC;
         else
             d = Sort.Direction.DESC;
 
-        String column = "";
-        if ((sort == 1) || (sort == -1))
-            column = "name";
-        else if ((sort == 2) || (sort == -2))
+        String column = "name";
+        if ((sort == 2) || (sort == -2))
             column = "introducedDate";
         else if ((sort == 3) || (sort == -3))
             column = "discontinuedDate";
@@ -78,37 +76,30 @@ public class ComputerServiceImpl implements ComputerService {
         return computerRepository.findAll(constructPageSpecification(start, size, d, column));
 	}
 
-    public int getNumberComputers() {
-        return (int) computerRepository.count();
-    }
-
-	public Page<Computer> list(int start, int size, String search) {
-        return computerRepository.findAllByNameLikeIgnoreCase("%" + search + "%", constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
+	public Page<Computer> list(int start, int size, String searchComputer, String searchCompany) {
+        return computerRepository.findAllByNameLikeIgnoreCase("%" + searchComputer + "%", constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
 	}
 
-	public Page<Computer> list(int start, int size, String search, int sort) {
-		Sort.Direction d = null;
+	public Page<Computer> list(int start, int size, String searchComputer, String searchCompany, int sort) {
+		Sort.Direction d;
         if (sort > 0)
             d = Sort.Direction.ASC;
         else
             d = Sort.Direction.DESC;
-
-        String column = "";
-        if ((sort == 1) || (sort == -1))
-            column = "name";
-        else if ((sort == 2) || (sort == -2))
+        System.out.println("sort : " + sort);
+        System.out.println("start : " + start);
+        System.out.println("size : " + size);
+        String column = "name";
+        if ((sort == 2) || (sort == -2))
             column = "introducedDate";
         else if ((sort == 3) || (sort == -3))
             column = "discontinuedDate";
         else if ((sort == 4) || (sort == -4))
             column = "company.name";
 
-        return computerRepository.findAllByNameLikeIgnoreCase("%"+search+"%", constructPageSpecification(start, size, d, column));
+        return computerRepository.findAllByNameLikeIgnoreCase("%" + searchComputer + "%", constructPageSpecification(start, size, d, column));
     }
 
-    public int getNumberComputers(String search) {
-        return (int) computerRepository.count();
-    }
 
 	@Transactional(readOnly=false)
 	public void delete(int id) {

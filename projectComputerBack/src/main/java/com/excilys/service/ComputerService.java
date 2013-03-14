@@ -14,10 +14,10 @@ public interface ComputerService {
 	Page<Computer> list(int start, int size);
 	
 	Page<Computer> list(int start, int size, int sort);
+
+	Page<Computer> list(int start, int size, String searchComputer, String searchCompany);
 	
-	Page<Computer> list(int start, int size, String search);
-	
-	Page<Computer> list(int start, int size, String search, int sort);
+	Page<Computer> list(int start, int size, String searchComputer, String searchCompany, int sort);
 
 	void delete(int id);
 	

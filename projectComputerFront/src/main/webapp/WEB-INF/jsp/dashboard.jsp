@@ -20,9 +20,9 @@
 
 	<section id="main">
 		<h1>
-			${nbComputer}
+			${nbComputers}
 			<c:choose>
-				<c:when test="${nbComputer < 2}"> 
+				<c:when test="${nbComputers < 2}">
 					computer found
 				</c:when>
 				<c:otherwise>
@@ -52,9 +52,11 @@
 		</c:choose>
 		<div id="actions">
 			<form action="/projectComputer/dashboard.html" method="GET">
-				<input type="search" id="searchbox" name="search" value="<c:if test="${param.search != null}">${param.search}</c:if>"
-					placeholder="Filter by computer name..."> 
-				<input type="submit" id="searchsubmit" value="Filter by name"
+				<input type="search" id="searchboxComputer" name="searchComputer" value="<c:if test="${param.searchComputer != null}">${param.searchComputer}</c:if>"
+					placeholder="Filter by computer name...">
+                <input type="search" id="searchboxCompany" name="searchCompany" value="<c:if test="${param.searchCompany != null}">${param.searchCompany}</c:if>"
+                       placeholder="Filter by company name...">
+				<input type="submit" id="searchsubmit" value="Filter"
 					class="btn primary">
 			</form>
 			<a class="btn success" id="add"
@@ -71,9 +73,11 @@
 					">
 						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-1</c:if>
-							<c:if test="${sort > 0}">sort=1</c:if>
-							<c:if test="${sort < 0}">sort=-1</c:if>
-							<c:if test="${param.search != null}">&search=${param.search}</c:if>">Computer name
+							<c:if test="${sort > 0}">sort=-1</c:if>
+							<c:if test="${sort < 0}">sort=1</c:if>
+							<c:if test="${page != null}">&page=0</c:if>
+							<c:if test="${param.searchComputer != null}">&searchComputer=${param.searchComputer}</c:if>
+							<c:if test="${param.searchCompany != null}">&searchCompany=${param.searchCompany}</c:if>">Computer name
 	        			</a>
     				</th>
     				<th class="col3 header 
@@ -83,9 +87,11 @@
 					">
 						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-2</c:if>
-							<c:if test="${sort > 0}">sort=2</c:if>
-							<c:if test="${sort < 0}">sort=-2</c:if>
-							<c:if test="${param.search != null}">&search=${param.search}</c:if>">Introduced
+							<c:if test="${sort > 0}">sort=-2</c:if>
+							<c:if test="${sort < 0}">sort=2</c:if>
+							<c:if test="${page != null}">&page=0</c:if>
+							<c:if test="${param.searchComputer != null}">&searchComputer=${param.searchComputer}</c:if>
+							<c:if test="${param.searchCompany != null}">&searchCompany=${param.searchCompany}</c:if>">Introduced
 	        			</a>
     				</th>
     				<th class="col4 header 
@@ -95,9 +101,11 @@
 					">
 						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-3</c:if>
-							<c:if test="${sort > 0}">sort=3</c:if>
-							<c:if test="${sort < 0}">sort=-3</c:if>
-							<c:if test="${param.search != null}">&search=${param.search}</c:if>">Discontinued
+							<c:if test="${sort > 0}">sort=-3</c:if>
+							<c:if test="${sort < 0}">sort=3</c:if>
+							<c:if test="${page != null}">&page=0</c:if>
+							<c:if test="${param.searchComputer != null}">&searchComputer=${param.searchComputer}</c:if>
+							<c:if test="${param.searchCompany != null}">&searchCompany=${param.searchCompany}</c:if>">Discontinued
 	        			</a>
     				</th>
     				<th class="col5 header 
@@ -109,7 +117,9 @@
 							<c:if test="${sort == null}">sort=-4</c:if>
 							<c:if test="${sort > 0}">sort=4</c:if>
 							<c:if test="${sort < 0}">sort=-4</c:if>
-							<c:if test="${param.search != null}">&search=${param.search}</c:if>">Company
+							<c:if test="${page != null}">&page=0</c:if>
+							<c:if test="${param.searchComputer != null}">&searchComputer=${param.searchComputer}</c:if>
+							<c:if test="${param.searchCompany != null}">&searchCompany=${param.searchCompany}</c:if>">Company
 	        			</a>
     				</th>
 				</tr>
@@ -145,7 +155,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
-        <pag:pagination page="${page}" nbComputers="${nbComputers}" PAGE_SIZE="${PAGE_SIZE}" search="${param.search}" />
+        <pag:pagination page="${page}" nbComputers="${nbComputers}" PAGE_SIZE="${PAGE_SIZE}" searchComputer="${param.searchComputer}" searchCompany="${param.searchCompany}" />
 	</section>
 </body>
 </html>
