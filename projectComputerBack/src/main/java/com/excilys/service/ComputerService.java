@@ -1,5 +1,6 @@
 package com.excilys.service;
 
+import com.excilys.dao.ComputerDAO;
 import org.springframework.data.domain.Page;
 
 import com.excilys.beans.Company;

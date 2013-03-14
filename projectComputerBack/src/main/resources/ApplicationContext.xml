@@ -16,6 +16,8 @@
 	<context:annotation-config />
 
 	<context:component-scan base-package="com.excilys.service" />
+    <context:component-scan base-package="com.excilys.dao" />
+    <context:component-scan base-package="com.excilys.metamodel" />
 
 	<bean id="computerDataSource" class="com.jolbox.bonecp.BoneCPDataSource">
 		<property name="driverClass" value="org.h2.Driver" />

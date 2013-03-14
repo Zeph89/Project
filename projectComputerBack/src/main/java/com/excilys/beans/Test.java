@@ -138,3 +138,63 @@ class Oeufs {
     }
 }
 
+class Oeufs2 {
+
+    int doX(Short x, Short y) { return 1; }
+    int doX(Integer x, Integer y) { return 2; }
+    int doX(Number n, Number m) { return 3; }
+    int doX(short x, short y) { return 4; }
+    int doX(int x, int y) { return 5; }
+    int doX(long x, long y) { return 10; }
+    int doX(float x, float y) { return 11; }
+    int doX(double x, double y) { return 12; }
+    int doX(Short... x) { return 6; }
+    int doX(Integer... x) { return 7; }
+
+    public static void main(String[] args) {
+        new Oeufs2().go();
+
+    }
+    void go() {
+        Short s = 7;
+        System.out.print(doX(s,s) + " ");
+
+        /*Short
+        Number (class parent)
+        short*/
+    }
+}
+
+enum turn {
+    ON("20"), OFF("50");
+    private String s;
+    turn(String s) {this.s = s;}
+    String getS() {return s;}
+}
+
+class enumm {
+    public static void main(String[] args) {
+        System.out.println(turn.ON.getS());
+
+    }
+}
+
+
+class tt {
+    public void t() {
+        throw new RuntimeException();
+    }
+    public static void main(String[] args) {
+       try {
+           tt t = new tt();
+           t.t();
+       } catch (RuntimeException e) {
+           System.out.println("OK");
+       } finally {
+           System.out.println("OKK");
+       }
+
+    }
+}
+
+

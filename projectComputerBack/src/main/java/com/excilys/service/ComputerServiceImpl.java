@@ -1,9 +1,6 @@
 package com.excilys.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
+import com.excilys.dao.ComputerDAO;
 import com.excilys.repository.ComputerRepository;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -21,16 +18,21 @@ import com.excilys.beans.Computer;
 import com.excilys.beans.Log;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
+
 @Service
 @Transactional(readOnly=true)
 public class ComputerServiceImpl implements ComputerService {
 
-    @Autowired
+    @Resource
     private ComputerRepository computerRepository;
 	
 	@Autowired
 	private LogService lg;
-	
+
+    @Autowired
+    private ComputerDAO computerDAO;
+
 	@Transactional(readOnly=false)
 	public void create(Computer computer) {
         Assert.notNull(computer);
@@ -77,27 +79,11 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	public Page<Computer> list(int start, int size, String searchComputer, String searchCompany) {
-        return computerRepository.findAllByNameLikeIgnoreCase("%" + searchComputer + "%", constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
+        return computerDAO.list(start, size, searchComputer, searchCompany);
 	}
 
 	public Page<Computer> list(int start, int size, String searchComputer, String searchCompany, int sort) {
-		Sort.Direction d;
-        if (sort > 0)
-            d = Sort.Direction.ASC;
-        else
-            d = Sort.Direction.DESC;
-        System.out.println("sort : " + sort);
-        System.out.println("start : " + start);
-        System.out.println("size : " + size);
-        String column = "name";
-        if ((sort == 2) || (sort == -2))
-            column = "introducedDate";
-        else if ((sort == 3) || (sort == -3))
-            column = "discontinuedDate";
-        else if ((sort == 4) || (sort == -4))
-            column = "company.name";
-
-        return computerRepository.findAllByNameLikeIgnoreCase("%" + searchComputer + "%", constructPageSpecification(start, size, d, column));
+        return computerDAO.list(start, size, searchComputer, searchCompany, sort);
     }
 
 

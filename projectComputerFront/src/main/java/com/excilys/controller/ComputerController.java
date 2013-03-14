@@ -58,11 +58,6 @@ public class ComputerController {
         List<Computer> listc = null;
 		
 		if (sort != null) {
-            System.out.println("------------------------------------------------------");
-            System.out.println("page = " + page);
-            System.out.println("sort = " + sort);
-            System.out.println("------------------------------------------------------");
-			
 			if ((searchComputer == null) && (searchCompany == null)) {
 				Page<Computer> p = cd.list(page, PAGE_SIZE, sort);
 				listc = p.getContent();

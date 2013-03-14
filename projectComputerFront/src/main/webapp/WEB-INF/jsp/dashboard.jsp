@@ -115,8 +115,8 @@
 					">
 						<a href="dashboard.html?
 							<c:if test="${sort == null}">sort=-4</c:if>
-							<c:if test="${sort > 0}">sort=4</c:if>
-							<c:if test="${sort < 0}">sort=-4</c:if>
+							<c:if test="${sort > 0}">sort=-4</c:if>
+							<c:if test="${sort < 0}">sort=4</c:if>
 							<c:if test="${page != null}">&page=0</c:if>
 							<c:if test="${param.searchComputer != null}">&searchComputer=${param.searchComputer}</c:if>
 							<c:if test="${param.searchCompany != null}">&searchCompany=${param.searchCompany}</c:if>">Company
