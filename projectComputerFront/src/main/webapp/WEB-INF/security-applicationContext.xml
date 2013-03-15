@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <beans:import resource="classpath:ApplicationContext.xml"/>
+
+  	<global-method-security secured-annotations="enabled" />
+
+    <http pattern="/login.html" security="none" /> <!-- La page login doit être accessible à tout le monde -->
+    <http pattern="/css/*" security="none" />
+    <http pattern="/js/*" security="none" />
+    <http auto-config="true">
+        <intercept-url pattern="/dashboard.html*" access="ROLE_USER" />
+        <intercept-url pattern="/**" access="ROLE_COMPUTER" />
+        <form-login login-page="/login.html" default-target-url="/dashboard.html"
+                    always-use-default-target="true" />
+    </http>
+
+    <!--
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="admin" password="admin" authorities="ROLE_USER, ROLE_COMPUTER" />
+                <user name="bob" password="bob" authorities="ROLE_USER" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+    -->
+    <authentication-manager>
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="computerDataSource"
+                users-by-username-query="select login,mdp,enabled from users where login=?"
+
+                authorities-by-username-query="select u.login, ur.authority from users u, users_roles ur
+                      where u.id = ur.user_id and u.login =?  "
+            />
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>
+

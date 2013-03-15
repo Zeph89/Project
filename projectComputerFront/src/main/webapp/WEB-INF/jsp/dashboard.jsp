@@ -62,7 +62,9 @@
 			<a class="btn success" id="add"
 				href="/projectComputer/insertComputer.html">Add a new computer</a>
 		</div>
-
+        <div style="position:absolute;top:85px;right:28px;">
+            <a class="btn success" id="deco" href='<c:url value="j_spring_security_logout"/>'>Déconnexion</a>
+        </div>
 		<table class="computers zebra-striped">
 			<thead>
 				<tr>

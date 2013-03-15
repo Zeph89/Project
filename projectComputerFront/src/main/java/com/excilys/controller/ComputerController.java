@@ -11,6 +11,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +36,12 @@ public class ComputerController {
 	
 	@Autowired
 	private CompanyService cy;
-	
+
+    @RequestMapping(value = "/login")
+    public String initComputer() {
+        return "/WEB-INF/jsp/login";
+    }
+
 	@RequestMapping(value = "/dashboard")
     public String initComputer(@RequestParam(value="searchComputer", required=false) String searchComputer,
                     @RequestParam(value="searchCompany", required=false) String searchCompany,
@@ -96,7 +102,7 @@ public class ComputerController {
 
 		return "/WEB-INF/jsp/dashboard";
 	}
-	
+
 	@RequestMapping(value = "/infoComputer")
     public String infoComputer(@RequestParam(value="id", required=true) Integer id,
                     Model model) {
@@ -125,7 +131,7 @@ public class ComputerController {
 
 		return "/WEB-INF/jsp/updateComputer";
 	}
-	
+
 	@RequestMapping(value = "/deleteComputer")
     public String deleteComputer(@RequestParam(value="id", required=true) Integer id,
                     Model model) {

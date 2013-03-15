@@ -23,6 +23,28 @@ CREATE TABLE LOG(
 	PRIMARY KEY (ID),
 );
 
+CREATE TABLE USERS (
+  ID INT NOT NULL AUTO_INCREMENT,
+  LOGIN VARCHAR(50) NOT NULL,
+  MDP CHAR(41) NOT NULL,
+  ENABLED tinyint(1) NOT NULL,
+  PRIMARY KEY (ID),
+);
+
+CREATE TABLE USERS_ROLES (
+  ID INT NOT NULL AUTO_INCREMENT,
+  USER_ID INT NOT NULL,
+  AUTHORITY VARCHAR(45) NOT NULL,
+  PRIMARY KEY (ID),
+	FOREIGN KEY (USER_ID) REFERENCES USERS(ID)
+);
+
+insert into USERS (login,mdp, enabled) values ( 'admin','admin', TRUE);
+insert into USERS (login,mdp, enabled) values ( 'bob','bob', TRUE);
+
+insert into USERS_ROLES (user_id, authority) values (1, 'ROLE_COMPUTER');
+insert into USERS_ROLES (user_id, authority) values (2, 'ROLE_USER');
+
 insert into company (id,name) values (  1,'Apple Inc.');
 insert into company (id,name) values (  2,'Thinking Machines');
 insert into company (id,name) values (  3,'RCA');

@@ -17,7 +17,6 @@
 
 	<context:component-scan base-package="com.excilys.service" />
     <context:component-scan base-package="com.excilys.dao" />
-    <context:component-scan base-package="com.excilys.metamodel" />
 
 	<bean id="computerDataSource" class="com.jolbox.bonecp.BoneCPDataSource">
 		<property name="driverClass" value="org.h2.Driver" />
@@ -41,7 +40,7 @@
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
@@ -51,7 +50,11 @@
 		<property name="entityManagerFactory" ref="em" />
 	</bean>
 
+
+
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<jpa:repositories base-package="com.excilys.repository" />
+
+
 </beans>

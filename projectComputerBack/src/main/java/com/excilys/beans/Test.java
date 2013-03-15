@@ -197,4 +197,68 @@ class tt {
     }
 }
 
+class Weather {
+    public static void main(String[] args) {
+        Forecaster fc = new Forecaster();
+        new Listener(fc);
+        new Listener(fc);
+        new Listener(fc);
+    }
+
+    static class Forecaster extends Thread {
+        private int tomorrowsTemperature;
+
+        public Forecaster() {
+            start();
+        }
+
+        public synchronized int getTomorrowsTemperature() {
+            return tomorrowsTemperature;
+        }
+
+        public void run() {
+            try {
+                for(;;) {
+                    sleep(1000);
+                    synchronized (this) {
+                        tomorrowsTemperature = (int)(40*Math.random()-10);
+                        notifyAll();
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    static class Listener extends Thread {
+        private final Forecaster forecaster;
+
+        public Listener(Forecaster forecaster) {
+            this.forecaster = forecaster;
+            start();
+        }
+
+        public void run() {
+            try {
+                for(;;) {
+                    synchronized (forecaster) {
+                        forecaster.wait();
+                    }
+
+                    System.out.println("I hear tomorrow's temperature will be " +
+                    + forecaster.getTomorrowsTemperature() + " degress Celsius");
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+
+}
+
+
+
+
 
