@@ -3,13 +3,8 @@ package com.excilys.beans;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -35,7 +30,6 @@ public class Computer {
 	private DateTime discontinuedDate;
 	
 	@ManyToOne
-    @JoinColumn(name="company_id")
 	private Company company;
 	
 	public Computer() {}

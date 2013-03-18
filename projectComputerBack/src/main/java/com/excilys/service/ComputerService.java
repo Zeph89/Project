@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 
 import com.excilys.beans.Company;
 import com.excilys.beans.Computer;
+import org.springframework.data.domain.Pageable;
 
 public interface ComputerService {
 
@@ -12,13 +13,7 @@ public interface ComputerService {
 
 	Computer findById(int id);
 
-	Page<Computer> list(int start, int size);
-	
-	Page<Computer> list(int start, int size, int sort);
-
-	Page<Computer> list(int start, int size, String searchComputer, String searchCompany);
-	
-	Page<Computer> list(int start, int size, String searchComputer, String searchCompany, int sort);
+	Page<Computer> list(Pageable pageable, String searchComputer, String searchCompany);
 
 	void delete(int id);
 	

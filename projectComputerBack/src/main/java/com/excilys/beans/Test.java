@@ -1,12 +1,17 @@
 package com.excilys.beans;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.*;
 
 import static java.lang.Math.*;
 
-class Test {
+public class Test {
+
+    public class Testt extends Test {
+
+    }
     public static void main(String[] args) {
         /*String test = "Test A. Test B. Test C.";
 
@@ -27,6 +32,8 @@ class Test {
             System.out.println("OK");
 
         System.out.println(k+++ ++k);
+
+        Testt tt = new Test().new Testt();
 
     }
 }
@@ -254,11 +261,200 @@ class Weather {
             }
         }
     }
+}
+
+class A {
+    static class B extends A {
+        public void go() {
+            System.out.println("1");
+        }
+    }
+
+    static class C extends B {
+        public void go() {
+            System.out.println("2");
+        }
+    }
+
+    public void go() {
+        System.out.println("3");
+    }
+
+    public static void main(String[] args) {
+        A a = new C();
+        a.go();
+    }
+}
+
+class D {
+    { i = 6; }
+    int i = 5;
+
+}
+
+class E {
+    public static void main(String[] args) {
+        D d = new D();
+        System.out.println(d.i);
+        System.out.println("");
+
+        Integer[] tab = {4, 5, 8,};
+        List<Integer> l = new ArrayList<Integer>();
+        l.add(5);
+        l.add(6);
+        l.add(3);
+        l.add(2);
+        l.add(1);
+
+        //tab = l.toArray(new Integer[l.size()]);
+        tab = l.toArray(new Integer[10]);
+
+        Object[] tab2 = l.toArray();
+
+
+        for (Integer str : tab) {
+            System.out.println(str);
+        }
+        System.out.println("");
+        for (Object str : tab2) {
+            System.out.println(str);
+        }
+
+        List l2 = new ArrayList<String>();
+        List<String> l3 = new ArrayList();
+
+        System.out.println(l2 + "" + l3);
+    }
+}
+
+class F implements Runnable {
+
+    public void run() {
+        try {
+            System.out.println("OK 1");
+            //sleep(1000);
+            System.out.println("OK 2");
+        } catch (Exception e) {
+            System.out.println("OK 3");
+        }
+
+    }
 
 
 }
 
+class G {
+    public static void main(String[] args) {
+        Thread d = new Thread(new F());
+        d.start();
+        d.interrupt();
+    }
+}
 
+class H {
+    Integer i;
+}
+
+class I extends H {
+    public I() throws RuntimeException {
+
+    }
+
+
+    public static void main(String[] args) {
+        H h = new H();
+        System.out.println(h.i);
+
+        /*I i = new I();
+        i.i(2L);
+
+        List<String> l = new ArrayList();
+        l.add("a4a");
+        l.add("a3a");
+        l.add("aaa");
+        l.add("a6a");
+        Collections.sort(l);
+
+        System.out.println(l);*/
+
+    }
+
+}
+
+class J extends I {
+
+    public static void main(String[] args) {
+        NavigableMap<String, Integer> nmap = new TreeMap<String, Integer>();
+        nmap.put("one", 1);
+        nmap.put("two", 2);
+        nmap.put("three", 3);
+        nmap.put("four", 4);
+        nmap.put("five", 5);
+        nmap.put("six", 6);
+
+        Object[] o = new Object[] {
+            nmap.lowerKey("five"),
+            nmap.higherKey("five"),
+            nmap.ceilingKey("five"),
+            nmap.floorKey("five"),
+        };
+
+        for (int i=0; i<o.length; i++)
+            System.out.println(o[i] + ",");
+
+
+        TreeSet<String> nset  = new TreeSet<String>();
+        nset.add("aaaa");
+        //nset.add(null);
+        nset.add("bbb");
+
+        for(String s: nset)
+            System.out.println(s);
+
+
+        DateFormat df = DateFormat.getDateInstance();
+        Date d = new Date();
+
+        List<?> l = new ArrayList<H>();
+        l.add(null);
+    }
+
+}
+
+class K {
+    public static void main(String[] args) {
+       System.out.println("A");
+      /* K k = new K() {
+           public static void main(String[] args) {
+               System.out.println("B");
+           }
+       };*/
+
+       /*try {
+           throw new RuntimeException();
+           System.out.println("B");
+       } catch (Exception e) {
+
+       }*/
+
+    }
+}
+
+class TestFile {
+    public static void main(String[] args) {
+        File f = new File("Test.txt");
+        System.out.println(f.exists() + " " + f.isFile());
+
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(f.exists() + " " + f.isFile());
+
+    }
+}
 
 
 

@@ -11,6 +11,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,14 +65,13 @@ public class ComputerController {
 		}
 
         List<Computer> listc = null;
-		
 		if (sort != null) {
 			if ((searchComputer == null) && (searchCompany == null)) {
-				Page<Computer> p = cd.list(page, PAGE_SIZE, sort);
+                Page<Computer> p = cd.list(constructPageSpecification(page, PAGE_SIZE, sort), "", "");
 				listc = p.getContent();
 				model.addAttribute("nbComputers", p.getTotalElements());
 			} else {
-				Page<Computer> p = cd.list(page, PAGE_SIZE, searchComputer, searchCompany,  sort);
+                Page<Computer> p = cd.list(constructPageSpecification(page, PAGE_SIZE, sort), searchComputer, searchCompany);
                 listc = p.getContent();
 				model.addAttribute("nbComputers", p.getTotalElements());
 				model.addAttribute("searchComputer", searchComputer);
@@ -78,12 +80,12 @@ public class ComputerController {
 
 			model.addAttribute("sort", sort);
 		} else if ((searchComputer == null) && (searchCompany == null)) {
-			Page<Computer> p = cd.list(page, PAGE_SIZE);
+            Page<Computer> p = cd.list(constructPageSpecification(page, PAGE_SIZE, 1), "", "");
 			listc = p.getContent();
 			model.addAttribute("nbComputers", p.getTotalElements());
 			
 		} else {
-			Page<Computer> p = cd.list(page, PAGE_SIZE, searchComputer, searchCompany);
+            Page<Computer> p = cd.list(constructPageSpecification(page, PAGE_SIZE, 1), searchComputer, searchCompany);
 			listc = p.getContent();
 			model.addAttribute("nbComputers", p.getTotalElements());
 			model.addAttribute("searchComputer", searchComputer);
@@ -249,4 +251,26 @@ public class ComputerController {
         return "/WEB-INF/jsp/insertComputer";
 	}
 
+    private Pageable constructPageSpecification(int start, int size, int sort) {
+        Pageable pageSpecification = new PageRequest(start, size, getSort(sort));
+        return pageSpecification;
+    }
+
+    private Sort getSort(int sort) {
+        Sort.Direction d;
+        if (sort > 0)
+            d = Sort.Direction.ASC;
+        else
+            d = Sort.Direction.DESC;
+
+        String column = "name";
+        if ((sort == 2) || (sort == -2))
+            column = "introducedDate";
+        else if ((sort == 3) || (sort == -3))
+            column = "discontinuedDate";
+        else if ((sort == 4) || (sort == -4))
+            column = "company.name";
+
+        return new Sort(d, column);
+    }
 }

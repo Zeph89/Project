@@ -2,16 +2,23 @@ package com.excilys.dao;
 
 
 import com.excilys.beans.Computer;
+import com.excilys.beans.QCompany;
 import com.excilys.beans.QComputer;
 import com.excilys.repository.ComputerRepository;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import com.mysema.query.types.Visitor;
+import com.mysema.query.types.path.PathBuilder;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
+
+import javax.annotation.Nullable;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository("ComputerDAOImpl")
 public class ComputerDAOImpl implements ComputerDAO {
@@ -19,32 +26,33 @@ public class ComputerDAOImpl implements ComputerDAO {
     @Resource
     private ComputerRepository computerRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private static QComputer computer = QComputer.computer;
+    private static QCompany company = QCompany.company;
 
     @Override
-    public Page<Computer> list(int start, int size, String searchComputer, String searchCompany) {
-        return computerRepository.findAll(getPredicate(searchComputer, searchCompany),
-                constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
-    }
+    public Page<Computer> list(Pageable pageable, String searchComputer, String searchCompany) {
 
-    @Override
-    public Page<Computer> list(int start, int size, String searchComputer, String searchCompany, int sort) {
-        Sort.Direction d;
-        if (sort > 0)
-            d = Sort.Direction.ASC;
-        else
-            d = Sort.Direction.DESC;
+        JPAQuery query = new JPAQuery(entityManager)
+                .from(computer)
+                .where(getPredicate(searchComputer, searchCompany));
 
-        String column = "name";
-        if ((sort == 2) || (sort == -2))
-            column = "introducedDate";
-        else if ((sort == 3) || (sort == -3))
-            column = "discontinuedDate";
-        else if ((sort == 4) || (sort == -4))
-            column = "company.name";
+        long total = query.count();
+        query.leftJoin(computer.company, company)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
 
-        return computerRepository.findAll(getPredicate(searchComputer, searchCompany),
-                constructPageSpecification(start, size, d, column));
+        for (Sort.Order o : pageable.getSort()) {
+            PathBuilder orderByExpression = new PathBuilder(Computer.class, "computer");
+            query.orderBy(new OrderSpecifier(o.isAscending() ? com.mysema.query.types.Order.ASC
+                    : com.mysema.query.types.Order.DESC, orderByExpression.get(o.getProperty())));
+        }
+
+        List<Computer> computers = query.list(QComputer.computer);
+
+        return new PageImpl<Computer>(computers, pageable, total);
     }
 
     private Predicate getPredicate(String searchComputer, String searchCompany) {
@@ -59,14 +67,5 @@ public class ComputerDAOImpl implements ComputerDAO {
             bb.and(computer.isNotNull());
 
         return bb;
-    }
-
-    private Pageable constructPageSpecification(int start, int size, Sort.Direction d, String column) {
-        Pageable pageSpecification = new PageRequest(start, size, getSort(d, column));
-        return pageSpecification;
-    }
-
-    private Sort getSort(Sort.Direction d, String column) {
-        return new Sort(d, column);
     }
 }

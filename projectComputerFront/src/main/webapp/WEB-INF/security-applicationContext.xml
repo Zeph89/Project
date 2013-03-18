@@ -15,7 +15,7 @@
     <http pattern="/css/*" security="none" />
     <http pattern="/js/*" security="none" />
     <http auto-config="true">
-        <intercept-url pattern="/dashboard.html*" access="ROLE_USER" />
+        <intercept-url pattern="/dashboard.html*" access="ROLE_USER, ROLE_COMPUTER" />
         <intercept-url pattern="/**" access="ROLE_COMPUTER" />
         <form-login login-page="/login.html" default-target-url="/dashboard.html"
                     always-use-default-target="true" />

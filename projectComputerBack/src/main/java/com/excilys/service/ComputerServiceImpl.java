@@ -56,36 +56,9 @@ public class ComputerServiceImpl implements ComputerService {
         return computerRepository.findOne(id);
 	}
 
-	public Page<Computer> list(int start, int size) {
-        return computerRepository.findAll(constructPageSpecification(start, size, Sort.Direction.ASC, "name"));
-	}
-
-	public Page<Computer> list(int start, int size, int sort) {
-		Sort.Direction d;
-        if (sort > 0)
-            d = Sort.Direction.ASC;
-        else
-            d = Sort.Direction.DESC;
-
-        String column = "name";
-        if ((sort == 2) || (sort == -2))
-            column = "introducedDate";
-        else if ((sort == 3) || (sort == -3))
-            column = "discontinuedDate";
-        else if ((sort == 4) || (sort == -4))
-            column = "company.name";
-
-        return computerRepository.findAll(constructPageSpecification(start, size, d, column));
-	}
-
-	public Page<Computer> list(int start, int size, String searchComputer, String searchCompany) {
-        return computerDAO.list(start, size, searchComputer, searchCompany);
-	}
-
-	public Page<Computer> list(int start, int size, String searchComputer, String searchCompany, int sort) {
-        return computerDAO.list(start, size, searchComputer, searchCompany, sort);
+    public Page<Computer> list(Pageable pageable, String searchComputer, String searchCompany) {
+        return computerDAO.list(pageable, searchComputer, searchCompany);
     }
-
 
 	@Transactional(readOnly=false)
 	public void delete(int id) {
@@ -140,13 +113,4 @@ public class ComputerServiceImpl implements ComputerService {
 		
 		lg.create(log);
 	}
-
-    private Pageable constructPageSpecification(int start, int size, Sort.Direction d, String column) {
-        Pageable pageSpecification = new PageRequest(start, size, getSort(d, column));
-        return pageSpecification;
-    }
-
-    private Sort getSort(Sort.Direction d, String column) {
-        return new Sort(d, column);
-    }
 }
