@@ -1,6 +1,5 @@
 package com.excilys.controller;
 
-import com.excilys.form.ComputerIdForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -263,7 +261,7 @@ public class ComputerController {
         else
             d = Sort.Direction.DESC;
 
-        String column = "name";
+        String column = "computer.name";
         if ((sort == 2) || (sort == -2))
             column = "introducedDate";
         else if ((sort == 3) || (sort == -3))
