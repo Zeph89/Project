@@ -48,6 +48,19 @@ public class ComputerDAOImpl implements ComputerDAO {
         return new PageImpl<Computer>(computers, pageable, total);
     }
 
+    @Override
+    public List<Computer> list(String searchComputer, String searchCompany) {
+
+        JPAQuery query = new JPAQuery(entityManager)
+                .from(computer)
+                .where(getPredicate(searchComputer, searchCompany));
+
+        query.leftJoin(computer.company, company)
+                .fetch();
+
+        return query.list(computer);
+    }
+
     private Predicate getPredicate(String searchComputer, String searchCompany) {
         BooleanBuilder bb = new BooleanBuilder();
 

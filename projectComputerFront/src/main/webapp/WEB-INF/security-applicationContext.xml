@@ -21,7 +21,7 @@
                     always-use-default-target="true" />
     </http>
 
-    <!--
+
     <authentication-manager>
         <authentication-provider>
             <user-service>
@@ -30,7 +30,8 @@
             </user-service>
         </authentication-provider>
     </authentication-manager>
-    -->
+
+    <!--
     <authentication-manager>
         <authentication-provider>
             <jdbc-user-service data-source-ref="computerDataSource"
@@ -41,5 +42,6 @@
             />
         </authentication-provider>
     </authentication-manager>
+    -->
 </beans:beans>
 

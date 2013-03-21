@@ -28,6 +28,7 @@
         <jadiratype>3.0.0.CR1</jadiratype>
         <logback.version>1.0.9</logback.version>
         <querydsl.version>2.9.0</querydsl.version>
+        <cxf.version>2.7.3</cxf.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -192,10 +193,23 @@
                 <artifactId>querydsl-jpa</artifactId>
                 <version>${querydsl.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<modules>
 		<module>projectComputerBack</module>
 		<module>projectComputerFront</module>
-	</modules>
+        <module>projectComputerWS</module>
+    </modules>
 </project>

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import com.excilys.beans.Log;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 @Transactional(readOnly=true)
@@ -34,6 +36,7 @@ public class ComputerServiceImpl implements ComputerService {
     private ComputerDAO computerDAO;
 
 	@Transactional(readOnly=false)
+    @Secured({"ROLE_COMPUTER"})
 	public void create(Computer computer) {
         Assert.notNull(computer);
         Assert.hasText(computer.getName());
@@ -51,16 +54,22 @@ public class ComputerServiceImpl implements ComputerService {
 		lg.create(log);
 	}
 
-	
+    @Secured({"ROLE_COMPUTER", "ROLE_USER"})
 	public Computer findById(int id) {
         return computerRepository.findOne(id);
 	}
 
+    @Secured({"ROLE_COMPUTER", "ROLE_USER"})
     public Page<Computer> list(Pageable pageable, String searchComputer, String searchCompany) {
         return computerDAO.list(pageable, searchComputer, searchCompany);
     }
 
+    public List<Computer> list(String searchComputer, String searchCompany) {
+        return computerDAO.list(searchComputer, searchCompany);
+    }
+
 	@Transactional(readOnly=false)
+    @Secured({"ROLE_COMPUTER"})
 	public void delete(int id) {
 		Computer c = findById(id);
         computerRepository.delete(c);
@@ -77,6 +86,7 @@ public class ComputerServiceImpl implements ComputerService {
 	}
 
 	@Transactional(readOnly=false)
+    @Secured({"ROLE_COMPUTER"})
 	public void update(Computer oldComputer, String newName,
 			String newIntroducedDate, String newDiscontinuedDate,
 			Company newCompany) {
