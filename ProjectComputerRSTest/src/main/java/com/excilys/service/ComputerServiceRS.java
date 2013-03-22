@@ -1,6 +1,6 @@
 package com.excilys.service;
 
-import com.excilys.beans.ComputerList;
+import com.excilys.model.ComputerList;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

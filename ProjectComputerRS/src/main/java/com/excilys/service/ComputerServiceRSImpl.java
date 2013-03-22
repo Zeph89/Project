@@ -17,6 +17,4 @@ public class ComputerServiceRSImpl implements ComputerServiceRS {
 
         return new ComputerList(computerService.list(searchComputer, searchCompany));
     }
-
-
 }
