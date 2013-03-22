@@ -1,18 +1,18 @@
 package com.excilys.service;
 
-import com.excilys.beans.Computer;
+import com.excilys.beans.ComputerList;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.util.List;
 
-
-@Path("/ComputerServiceRS")
+@Path("/computer/")
 public interface ComputerServiceRS {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    List<Computer> list(String searchComputer, String searchCompany);
+    @Produces("application/xml")
+    @Path("{searchComputer}/company/{searchCompany}")
+    ComputerList list(@PathParam("searchComputer") String searchComputer,
+                      @PathParam("searchCompany") String searchCompany);
 }

@@ -6,9 +6,11 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table (name= "computer")
+@XmlRootElement(name = "computer")
 public class Computer {
 
 	@Id

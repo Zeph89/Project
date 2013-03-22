@@ -19,5 +19,13 @@
             <groupId>projectComputerBack</groupId>
             <artifactId>projectComputerBack</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+        </dependency>
     </dependencies>
 </project>
