@@ -29,6 +29,7 @@
         <logback.version>1.0.9</logback.version>
         <querydsl.version>2.9.0</querydsl.version>
         <cxf.version>2.7.3</cxf.version>
+        <jersey.version>1.9.1</jersey.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -204,12 +205,18 @@
                 <artifactId>cxf-rt-transports-http</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
-
-		</dependencies>
+            <dependency>
+                <groupId>com.sun.jersey</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey.version}</version>
+            </dependency>
+        </dependencies>
 	</dependencyManagement>
 	<modules>
 		<module>projectComputerBack</module>
 		<module>projectComputerFront</module>
         <module>projectComputerWS</module>
+        <module>ProjectComputerRS</module>
+        <module>ProjectComputerWSTest</module>
     </modules>
 </project>

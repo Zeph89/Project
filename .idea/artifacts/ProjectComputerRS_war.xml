@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ProjectComputerRS:war">
+    <output-path>$PROJECT_DIR$/ProjectComputerRS/target</output-path>
+    <root id="archive" name="projectComputer.war">
+      <element id="artifact" artifact-name="ProjectComputerRS:war exploded" />
+    </root>
+  </artifact>
+</component>
